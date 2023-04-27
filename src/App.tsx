@@ -1,12 +1,19 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import { Routes, Route } from "react-router-dom";
+
+// Pages
+import LoginPage from "./pages/LoginPage";
 
 // Import the functions you need from the SDKs you need
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
+import {
+  getAuth,
+  connectAuthEmulator,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -19,30 +26,19 @@ const firebaseConfig = {
   appId: "1:297263056849:web:edb1b5d3b9a785739642f0",
   measurementId: "G-GBYSM2B8C2",
 };
-
-// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebaseApp);
+
+// Authentication
 const auth = getAuth(firebaseApp);
+connectAuthEmulator(auth, "http://localhost:9099");
+
+// React Router
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/auth/login" element={<LoginPage />} />
+    </Routes>
   );
 }
 
