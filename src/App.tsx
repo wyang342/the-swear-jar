@@ -1,13 +1,25 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+import RequireAuth from "./components/RequireAuth";
 
-// Pages
-import LoginPage from "./pages/LoginPage";
+// Import Pages
+import SigninPage from "./pages/SigninPage";
+import HomePage from "./pages/HomePage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
     <Routes>
-      <Route path="/auth/login" element={<LoginPage />} />
+      <Route
+        path="/"
+        element={
+          <RequireAuth>
+            <HomePage />
+          </RequireAuth>
+        }
+      />
+      <Route path="auth/signin/" element={<SigninPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

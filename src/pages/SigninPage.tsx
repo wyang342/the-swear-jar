@@ -1,10 +1,13 @@
-import * as React from "react";
+import React, { useContext, useEffect } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { signInDefault } from "../config/firebase";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 // import FormControlLabel from "@mui/material/FormControlLabel";
 // import Checkbox from "@mui/material/Checkbox";
@@ -12,14 +15,38 @@ import Container from "@mui/material/Container";
 // import Grid from "@mui/material/Grid";
 
 function LoginPage() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    if (data.get("email") === null || data.get("password") === null) {
+      return;
+    }
+
+    const email = data.get("email")! as string;
+    const password = data.get("password")! as string;
+
+    try {
+      const userCredential = await signInDefault(email, password);
+
+      if (userCredential) {
+        console.log("Signed in successfully");
+        navigate("/");
+      }
+    } catch (err: any) {
+      console.log("Error signing in: ", err.message);
+    }
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
 
   return (
     <Container component="main" maxWidth="xs">
