@@ -5,53 +5,42 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { signInDefault } from "../config/firebase";
+import { signUpDefault } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
-import Alert from "@mui/material/Alert";
-import { useFormik } from "formik";
-import * as yup from "yup";
 
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email("Enter a valid email")
-    .required("Email is required"),
-  password: yup
-    .string()
-    .min(8, "Password should be at least 8 characters")
-    .required("Password is required"),
-});
-
-function SigninPage() {
+function SignupPage() {
   const { currentUser } = useContext(AuthContext);
-  const [error, setError] = React.useState<Boolean>(false);
   const navigate = useNavigate();
 
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      const email = values.email;
-      const password = values.password;
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-      try {
-        const userCredential = await signInDefault(email, password);
+    const data = new FormData(event.currentTarget);
 
-        if (userCredential) {
-          navigate("/");
-        }
-      } catch (err: any) {
-        console.log("Error signing in: ", err.message);
-        setError(true);
+    if (data.get("email") === null || data.get("password") === null) {
+      return;
+    }
+
+    const email = data.get("email")! as string;
+    const password = data.get("password")! as string;
+
+    try {
+      const userCredential = await signUpDefault(email, password);
+
+      if (userCredential) {
+        console.log("Signed up successfully");
+        navigate("/auth/signin");
       }
-    },
-  });
+    } catch (err: any) {
+      console.log("Error signing up: ", err.message);
+    }
+  };
 
   useEffect(() => {
     if (currentUser) {
@@ -71,23 +60,9 @@ function SigninPage() {
         }}
       >
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign up
         </Typography>
-
-        {error ? (
-          <Alert sx={{ marginTop: 2 }} severity="error">
-            Incorrect credentials or too many attempts.
-            <br />
-            Please try again.
-          </Alert>
-        ) : null}
-
-        <Box
-          component="form"
-          onSubmit={formik.handleSubmit}
-          noValidate
-          sx={{ mt: 1 }}
-        >
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -97,10 +72,6 @@ function SigninPage() {
             name="email"
             autoComplete="email"
             autoFocus
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
           />
           <TextField
             margin="normal"
@@ -111,18 +82,28 @@ function SigninPage() {
             type="password"
             id="password"
             autoComplete="current-password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
           />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="confirm-password"
+            label="Confirm Password"
+            type="password"
+            // id="password"
+            autoComplete="current-password"
+          />
+          {/* <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          /> */}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Sign Up
           </Button>
           <Grid container>
             {/* <Grid item xs>
@@ -143,4 +124,4 @@ function SigninPage() {
   );
 }
 
-export default SigninPage;
+export default SignupPage;

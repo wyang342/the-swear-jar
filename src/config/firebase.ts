@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   User,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 
 // Your web app's Firebase configuration
@@ -32,6 +33,10 @@ export async function signInDefault(email: string, password: string) {
 
 export async function signOutDefault() {
   return await signOut(auth);
+}
+
+export async function signUpDefault(email: string, password: string) {
+  return await createUserWithEmailAndPassword(auth, email, password);
 }
 
 export function userStateListener(callback: NextOrObserver<User>) {
