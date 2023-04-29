@@ -12,18 +12,8 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import { useFormik } from "formik";
-import * as yup from "yup";
-
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email("Enter a valid email")
-    .required("Email is required"),
-  password: yup
-    .string()
-    .min(8, "Password should be at least 8 characters")
-    .required("Password is required"),
-});
+import { Link as RouterLink } from "react-router-dom";
+import yupSchema from "../utils/validationSchema";
 
 function SigninPage() {
   const { currentUser } = useContext(AuthContext);
@@ -35,7 +25,7 @@ function SigninPage() {
       email: "",
       password: "",
     },
-    validationSchema: validationSchema,
+    validationSchema: yupSchema,
     onSubmit: async (values) => {
       const email = values.email;
       const password = values.password;
@@ -132,7 +122,7 @@ function SigninPage() {
             </Grid> */}
             <Grid item>
               Don't have an account?&nbsp;
-              <Link href="#" variant="body2">
+              <Link to="/auth/signup" component={RouterLink} variant="body2">
                 {"Sign Up"}
               </Link>
             </Grid>

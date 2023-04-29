@@ -6,41 +6,42 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { signUpDefault } from "../config/firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
+import yupSchema from "../utils/validationSchema";
+import { useFormik } from "formik";
+import { Alert } from "@mui/material";
 
 function SignupPage() {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [error, setError] = React.useState<Boolean>(false);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      passwordConfirmation: "",
+    },
+    validationSchema: yupSchema,
+    onSubmit: async (values) => {
+      const email = values.email;
+      const password = values.password;
 
-    const data = new FormData(event.currentTarget);
+      try {
+        const userCredential = await signUpDefault(email, password);
 
-    if (data.get("email") === null || data.get("password") === null) {
-      return;
-    }
-
-    const email = data.get("email")! as string;
-    const password = data.get("password")! as string;
-
-    try {
-      const userCredential = await signUpDefault(email, password);
-
-      if (userCredential) {
-        console.log("Signed up successfully");
-        navigate("/auth/signin");
+        if (userCredential) {
+          navigate("/");
+        }
+      } catch (err: any) {
+        console.log("Error signing in: ", err.message);
+        setError(true);
       }
-    } catch (err: any) {
-      console.log("Error signing up: ", err.message);
-    }
-  };
+    },
+  });
 
   useEffect(() => {
     if (currentUser) {
@@ -62,7 +63,21 @@ function SignupPage() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+
+        {error ? (
+          <Alert sx={{ marginTop: 2 }} severity="error">
+            An error occurred while signing up.
+            <br />
+            Please try again.
+          </Alert>
+        ) : null}
+
+        <Box
+          component="form"
+          onSubmit={formik.handleSubmit}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
             required
@@ -72,6 +87,10 @@ function SignupPage() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
           />
           <TextField
             margin="normal"
@@ -81,7 +100,10 @@ function SignupPage() {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
           />
           <TextField
             margin="normal"
@@ -89,9 +111,18 @@ function SignupPage() {
             fullWidth
             name="confirm-password"
             label="Confirm Password"
-            type="password"
-            // id="password"
-            autoComplete="current-password"
+            type="passwordConfirmation"
+            id="passwordConfirmation"
+            value={formik.values.passwordConfirmation}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.passwordConfirmation &&
+              Boolean(formik.errors.passwordConfirmation)
+            }
+            helperText={
+              formik.touched.passwordConfirmation &&
+              formik.errors.passwordConfirmation
+            }
           />
           {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -112,9 +143,9 @@ function SignupPage() {
               </Link>
             </Grid> */}
             <Grid item>
-              Don't have an account?&nbsp;
-              <Link href="#" variant="body2">
-                {"Sign Up"}
+              Already a user?&nbsp;
+              <Link to="/auth/signin" component={RouterLink} variant="body2">
+                {"Sign In"}
               </Link>
             </Grid>
           </Grid>
