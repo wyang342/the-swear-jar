@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -17,7 +17,8 @@ import { signInSchema } from "../utils/validationSchema";
 
 function SigninPage() {
   const { currentUser } = useContext(AuthContext);
-  const [error, setError] = React.useState<Boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -31,6 +32,8 @@ function SigninPage() {
       const password = values.password;
 
       try {
+        setError(false);
+        setLoading(true);
         const userCredential = await signInDefault(email, password);
 
         if (userCredential) {
@@ -40,6 +43,8 @@ function SigninPage() {
         console.log("Error signing in: ", err.message);
         setError(true);
       }
+
+      setLoading(false);
     },
   });
 
@@ -110,6 +115,7 @@ function SigninPage() {
             type="submit"
             fullWidth
             variant="contained"
+            disabled={loading}
             sx={{ mt: 3, mb: 2 }}
           >
             Sign In
