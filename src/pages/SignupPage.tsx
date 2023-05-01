@@ -10,7 +10,7 @@ import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
-import yupSchema from "../utils/validationSchema";
+import { signUpSchema } from "../utils/validationSchema";
 import { useFormik } from "formik";
 import { Alert } from "@mui/material";
 
@@ -25,7 +25,7 @@ function SignupPage() {
       password: "",
       passwordConfirmation: "",
     },
-    validationSchema: yupSchema,
+    validationSchema: signUpSchema,
     onSubmit: async (values) => {
       const email = values.email;
       const password = values.password;

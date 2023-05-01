@@ -13,7 +13,7 @@ import Grid from "@mui/material/Grid";
 import Alert from "@mui/material/Alert";
 import { useFormik } from "formik";
 import { Link as RouterLink } from "react-router-dom";
-import yupSchema from "../utils/validationSchema";
+import { signInSchema } from "../utils/validationSchema";
 
 function SigninPage() {
   const { currentUser } = useContext(AuthContext);
@@ -25,7 +25,7 @@ function SigninPage() {
       email: "",
       password: "",
     },
-    validationSchema: yupSchema,
+    validationSchema: signInSchema,
     onSubmit: async (values) => {
       const email = values.email;
       const password = values.password;
