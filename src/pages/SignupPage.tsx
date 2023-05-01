@@ -109,9 +109,9 @@ function SignupPage() {
             margin="normal"
             required
             fullWidth
-            name="confirm-password"
+            name="passwordConfirmation"
             label="Confirm Password"
-            type="passwordConfirmation"
+            type="password"
             id="passwordConfirmation"
             value={formik.values.passwordConfirmation}
             onChange={formik.handleChange}
@@ -124,10 +124,6 @@ function SignupPage() {
               formik.errors.passwordConfirmation
             }
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
             type="submit"
             fullWidth
@@ -137,11 +133,6 @@ function SignupPage() {
             Sign Up
           </Button>
           <Grid container>
-            {/* <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid> */}
             <Grid item>
               Already a user?&nbsp;
               <Link to="/auth/signin" component={RouterLink} variant="body2">
