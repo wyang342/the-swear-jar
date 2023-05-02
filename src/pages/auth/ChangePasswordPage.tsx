@@ -10,7 +10,6 @@ import { useFormik } from "formik";
 import { changePasswordSchema } from "../../utils/validationSchemas";
 import { useNavigate } from "react-router-dom";
 import {
-  getAuth,
   updatePassword,
   reauthenticateWithCredential,
   EmailAuthProvider,
@@ -18,7 +17,7 @@ import {
 import { AuthContext } from "../../context/AuthContext";
 
 function ChangePasswordPage() {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, signOut } = useContext(AuthContext);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -94,12 +93,18 @@ function ChangePasswordPage() {
         ) : null}
 
         {success ? (
-          <Alert sx={{ marginTop: 2 }} severity="success">
-            This is a success alert — check it out!
+          <Alert sx={{ marginY: 2 }} severity="success">
+            Password successfully changed!
+            <br />
+            Please sign in again.
           </Alert>
         ) : null}
 
-        {success ? null : (
+        {success ? (
+          <Button variant="contained" onClick={() => signOut()}>
+            Sign in
+          </Button>
+        ) : (
           <>
             <Box
               component="form"
