@@ -5,28 +5,28 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { signInDefault } from "../config/firebase";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { signUpDefault } from "../../config/firebase";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
-import Alert from "@mui/material/Alert";
+import { signUpSchema } from "../../utils/validationSchemas";
 import { useFormik } from "formik";
-import { Link as RouterLink } from "react-router-dom";
-import { signInSchema } from "../utils/validationSchema";
+import { Alert } from "@mui/material";
 
-function SigninPage() {
+function SignupPage() {
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
+      passwordConfirmation: "",
     },
-    validationSchema: signInSchema,
+    validationSchema: signUpSchema,
     onSubmit: async (values) => {
       const email = values.email;
       const password = values.password;
@@ -34,7 +34,7 @@ function SigninPage() {
       try {
         setError(false);
         setLoading(true);
-        const userCredential = await signInDefault(email, password);
+        const userCredential = await signUpDefault(email, password);
 
         if (userCredential) {
           navigate("/");
@@ -66,12 +66,12 @@ function SigninPage() {
         }}
       >
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign up
         </Typography>
 
         {error ? (
           <Alert sx={{ marginTop: 2 }} severity="error">
-            Incorrect credentials or too many attempts.
+            An error occurred while signing up.
             <br />
             Please try again.
           </Alert>
@@ -90,7 +90,6 @@ function SigninPage() {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
             autoFocus
             value={formik.values.email}
             onChange={formik.handleChange}
@@ -105,11 +104,29 @@ function SigninPage() {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
             value={formik.values.password}
             onChange={formik.handleChange}
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="passwordConfirmation"
+            label="Confirm Password"
+            type="password"
+            id="passwordConfirmation"
+            value={formik.values.passwordConfirmation}
+            onChange={formik.handleChange}
+            error={
+              formik.touched.passwordConfirmation &&
+              Boolean(formik.errors.passwordConfirmation)
+            }
+            helperText={
+              formik.touched.passwordConfirmation &&
+              formik.errors.passwordConfirmation
+            }
           />
           <Button
             type="submit"
@@ -118,18 +135,13 @@ function SigninPage() {
             disabled={loading}
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Sign Up
           </Button>
           <Grid container>
-            {/* <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid> */}
             <Grid item>
-              Don't have an account?&nbsp;
-              <Link to="/auth/signup" component={RouterLink} variant="body2">
-                {"Sign Up"}
+              Already a user?&nbsp;
+              <Link to="/auth/signin" component={RouterLink} variant="body2">
+                {"Sign In"}
               </Link>
             </Grid>
           </Grid>
@@ -139,4 +151,4 @@ function SigninPage() {
   );
 }
 
-export default SigninPage;
+export default SignupPage;
