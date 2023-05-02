@@ -22,8 +22,6 @@ function App() {
           </RequireAuth>
         }
       />
-      <Route path="auth/signup" element={<SignupPage />} />
-      <Route path="auth/signin" element={<SigninPage />} />
       <Route
         path="auth/change-password"
         element={
@@ -32,7 +30,17 @@ function App() {
           </RequireAuth>
         }
       />
-      <Route path="my-account" element={<MyAccountPage />} />
+      <Route
+        path="my-account"
+        element={
+          <RequireAuth>
+            <MyAccountPage />
+          </RequireAuth>
+        }
+      />
+
+      <Route path="auth/signup" element={<SignupPage />} />
+      <Route path="auth/signin" element={<SigninPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
