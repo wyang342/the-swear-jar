@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -15,11 +15,13 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
 } from "firebase/auth";
+import { AuthContext } from "../../context/AuthContext";
 
 function ChangePasswordPage() {
   const { currentUser } = useContext(AuthContext);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -34,19 +36,33 @@ function ChangePasswordPage() {
       const newPassword = values.newPassword;
 
       try {
-        setError(false);
+        setSuccess(false);
+        setError("");
         setLoading(true);
 
+        // If no user is signed in, navigate to signin page
+        if (!currentUser) {
+          navigate("/auth/signin");
+          return;
+        }
+
+        // Reauthenticate user
         const credential = EmailAuthProvider.credential(
-          currentUser.email,
+          currentUser.email!,
           currentPassword
         );
         await reauthenticateWithCredential(currentUser, credential);
 
-        // await updatePassword(currentUser);
+        // Update password
+        await updatePassword(currentUser, newPassword);
+
+        setSuccess(true);
       } catch (err: any) {
-        console.log("Error changing password: ", err.message);
-        setError(true);
+        if (err.code === "auth/wrong-password") {
+          setError("Current password is incorrect.");
+        } else {
+          setError("An error occurred while resetting your password.");
+        }
       }
 
       setLoading(false);
@@ -71,7 +87,7 @@ function ChangePasswordPage() {
 
         {error ? (
           <Alert sx={{ marginTop: 2 }} severity="error">
-            An error occurred while resetting your password.
+            {error}
             <br />
             Please try again.
           </Alert>

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { userStateListener, signOutDefault } from "../config/firebase";
 
 export const AuthContext = createContext({
-  // "User" comes from firebase auth-public.d.ts
   currentUser: {} as User | null,
   setCurrentUser: (_user: User) => {},
   signOut: () => {},
