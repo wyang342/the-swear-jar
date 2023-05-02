@@ -8,7 +8,9 @@ import SignupPage from "./pages/auth/SignupPage";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ChangePasswordPage from "./pages/auth/ChangePasswordPage";
+import MyAccountPage from "./pages/MyAccountPage";
 
+// App == Routes
 function App() {
   return (
     <Routes>
@@ -30,6 +32,7 @@ function App() {
           </RequireAuth>
         }
       />
+      <Route path="my-account" element={<MyAccountPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
