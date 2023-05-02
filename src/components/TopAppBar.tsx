@@ -11,12 +11,36 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+// import AdbIcon from "@mui/icons-material/Adb";
+import { useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { Link } from "@mui/material";
+import { AuthContext } from "../context/AuthContext";
+import { useContext } from "react";
 
-const pages = ["Placeholder"];
-const settings = ["My Account", "Logout"];
+const pages = ["Groups"];
+const settings = ["My Account", "Sign Out"];
 
 function TopAppBar() {
+  const navigate = useNavigate();
+  const { signOut } = useContext(AuthContext);
+
+  const handleSettingClick = (setting: string) => {
+    if (setting === "My Account") {
+      navigate("/my-account");
+    } else if (setting === "Sign Out") {
+      signOut();
+    }
+    handleCloseUserMenu();
+  };
+
+  const handlePageClick = (page: string) => {
+    if (page === "Groups") {
+      navigate("/");
+    }
+    handleCloseNavMenu();
+  };
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -44,11 +68,10 @@ function TopAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
+
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -59,7 +82,13 @@ function TopAppBar() {
               textDecoration: "none",
             }}
           >
-            SWEAR JAR
+            <Link
+              component={RouterLink}
+              to={"/"}
+              sx={{ color: "#ffffff", textDecoration: "none" }}
+            >
+              SWEAR JAR
+            </Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -92,18 +121,21 @@ function TopAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handlePageClick(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+
+          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href=""
+            onClick={() => {
+              navigate("/");
+            }}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -115,13 +147,19 @@ function TopAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            <Link
+              component={RouterLink}
+              to={"/"}
+              sx={{ color: "#ffffff", textDecoration: "none" }}
+            >
+              SWEAR JAR
+            </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handlePageClick(page)}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
@@ -152,7 +190,10 @@ function TopAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={() => handleSettingClick(setting)}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

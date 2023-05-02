@@ -17,13 +17,14 @@ import "@fontsource/roboto/700.css";
 
 // Set theme for entire site
 const theme = createTheme({
-  palette: { primary: { main: green[400] }, secondary: { main: "#BB66B7" } },
+  palette: { primary: { main: green[500] }, secondary: { main: "#AF4CAB" } },
   components: {
     MuiCssBaseline: {
       styleOverrides: (themeParam) => `
         main {
           max-width: 60%;
           margin: 0 auto;
+          padding: 20px;
         },  
       `,
     },
