@@ -9,40 +9,44 @@ import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ChangePasswordPage from "./pages/auth/ChangePasswordPage";
 import MyAccountPage from "./pages/MyAccountPage";
+import TopAppBar from "./components/TopAppBar";
 
 // App == Routes
 function App() {
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <RequireAuth>
-            <HomePage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="auth/change-password"
-        element={
-          <RequireAuth>
-            <ChangePasswordPage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="my-account"
-        element={
-          <RequireAuth>
-            <MyAccountPage />
-          </RequireAuth>
-        }
-      />
+    <>
+      <TopAppBar />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <HomePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="auth/change-password"
+          element={
+            <RequireAuth>
+              <ChangePasswordPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="my-account"
+          element={
+            <RequireAuth>
+              <MyAccountPage />
+            </RequireAuth>
+          }
+        />
 
-      <Route path="auth/signup" element={<SignupPage />} />
-      <Route path="auth/signin" element={<SigninPage />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+        <Route path="auth/signup" element={<SignupPage />} />
+        <Route path="auth/signin" element={<SigninPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   );
 }
 

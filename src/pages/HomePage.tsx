@@ -4,14 +4,11 @@ import TopAppBar from "../components/TopAppBar";
 
 function HomePage() {
   return (
-    <>
-      <TopAppBar />
-      <main>
-        <Typography component="h1" variant="h5">
-          Your Jars
-        </Typography>
-      </main>
-    </>
+    <main>
+      <Typography component="h1" variant="h5">
+        Your Jars
+      </Typography>
+    </main>
   );
 }
 

@@ -69,129 +69,126 @@ function ChangePasswordPage() {
   });
 
   return (
-    <>
-      <TopAppBar />
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 0,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Change Password
-          </Typography>
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 0,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Change Password
+        </Typography>
 
-          {error ? (
-            <Alert sx={{ marginTop: 2 }} severity="error">
-              {error}
-              <br />
-              Please try again.
-            </Alert>
-          ) : null}
+        {error ? (
+          <Alert sx={{ marginTop: 2 }} severity="error">
+            {error}
+            <br />
+            Please try again.
+          </Alert>
+        ) : null}
 
-          {success ? (
-            <Alert sx={{ marginY: 2 }} severity="success">
-              Password successfully changed!
-              <br />
-              Please sign in again.
-            </Alert>
-          ) : null}
+        {success ? (
+          <Alert sx={{ marginY: 2 }} severity="success">
+            Password successfully changed!
+            <br />
+            Please sign in again.
+          </Alert>
+        ) : null}
 
-          {success ? (
-            <Button
-              variant="contained"
-              onClick={() => signOut()}
-              sx={{ color: "white" }}
+        {success ? (
+          <Button
+            variant="contained"
+            onClick={() => signOut()}
+            sx={{ color: "white" }}
+          >
+            Sign in
+          </Button>
+        ) : (
+          <>
+            <Box
+              component="form"
+              onSubmit={formik.handleSubmit}
+              noValidate
+              sx={{ mt: 1 }}
             >
-              Sign in
-            </Button>
-          ) : (
-            <>
-              <Box
-                component="form"
-                onSubmit={formik.handleSubmit}
-                noValidate
-                sx={{ mt: 1 }}
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="currentPassword"
+                label="Current Password"
+                name="currentPassword"
+                type="password"
+                autoFocus
+                value={formik.values.currentPassword}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.currentPassword &&
+                  Boolean(formik.errors.currentPassword)
+                }
+                helperText={
+                  formik.touched.currentPassword &&
+                  formik.errors.currentPassword
+                }
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="newPassword"
+                label="New Password"
+                type="password"
+                id="newPassword"
+                value={formik.values.newPassword}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.newPassword &&
+                  Boolean(formik.errors.newPassword)
+                }
+                helperText={
+                  formik.touched.newPassword && formik.errors.newPassword
+                }
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="newPasswordConfirmation"
+                label="New Password Confirmation"
+                type="password"
+                id="newPasswordConfirmation"
+                value={formik.values.newPasswordConfirmation}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.newPasswordConfirmation &&
+                  Boolean(formik.errors.newPasswordConfirmation)
+                }
+                helperText={
+                  formik.touched.newPasswordConfirmation &&
+                  formik.errors.newPasswordConfirmation
+                }
+              />
+              <Button
+                fullWidth
+                type="submit"
+                variant="contained"
+                disabled={loading}
+                sx={{ mt: 3, mb: 2, color: "white" }}
               >
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="currentPassword"
-                  label="Current Password"
-                  name="currentPassword"
-                  type="password"
-                  autoFocus
-                  value={formik.values.currentPassword}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.currentPassword &&
-                    Boolean(formik.errors.currentPassword)
-                  }
-                  helperText={
-                    formik.touched.currentPassword &&
-                    formik.errors.currentPassword
-                  }
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="newPassword"
-                  label="New Password"
-                  type="password"
-                  id="newPassword"
-                  value={formik.values.newPassword}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.newPassword &&
-                    Boolean(formik.errors.newPassword)
-                  }
-                  helperText={
-                    formik.touched.newPassword && formik.errors.newPassword
-                  }
-                />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="newPasswordConfirmation"
-                  label="New Password Confirmation"
-                  type="password"
-                  id="newPasswordConfirmation"
-                  value={formik.values.newPasswordConfirmation}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.newPasswordConfirmation &&
-                    Boolean(formik.errors.newPasswordConfirmation)
-                  }
-                  helperText={
-                    formik.touched.newPasswordConfirmation &&
-                    formik.errors.newPasswordConfirmation
-                  }
-                />
-                <Button
-                  fullWidth
-                  type="submit"
-                  variant="contained"
-                  disabled={loading}
-                  sx={{ mt: 3, mb: 2, color: "white" }}
-                >
-                  Submit
-                </Button>
-              </Box>
-              <Button variant="text" onClick={() => navigate(-1)}>
-                Cancel
+                Submit
               </Button>
-            </>
-          )}
-        </Box>
-      </Container>
-    </>
+            </Box>
+            <Button variant="text" onClick={() => navigate(-1)}>
+              Cancel
+            </Button>
+          </>
+        )}
+      </Box>
+    </Container>
   );
 }
 

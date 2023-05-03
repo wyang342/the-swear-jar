@@ -9,6 +9,7 @@ import {
   User,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -42,5 +43,8 @@ export async function signUpDefault(email: string, password: string) {
 export function userStateListener(callback: NextOrObserver<User>) {
   return onAuthStateChanged(auth, callback);
 }
+
+// Storage
+export const storage = getStorage(firebaseApp);
 
 export default firebaseApp;

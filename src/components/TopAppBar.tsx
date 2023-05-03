@@ -16,20 +16,25 @@ import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../config/firebase";
+import APIService from "../services/APIService";
 
 const pages = ["Jars"];
 const settings = ["My Account", "Sign Out"];
 
 function TopAppBar() {
+  const [imageUrl, setImageUrl] = useState<string>("");
   const navigate = useNavigate();
-  const { signOut } = useContext(AuthContext);
+  const { currentUser, signOut } = useContext(AuthContext);
 
   const handleSettingClick = (setting: string) => {
     if (setting === "My Account") {
       navigate("/my-account");
     } else if (setting === "Sign Out") {
       signOut();
+      window.location.reload();
     }
     handleCloseUserMenu();
   };
@@ -62,6 +67,13 @@ function TopAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  // Gets profile picture on mount
+  useEffect(() => {
+    if (currentUser) {
+      APIService.getProfilePicture(setImageUrl, currentUser);
+    }
+  }, [currentUser]);
 
   return (
     <AppBar position="static">
@@ -132,10 +144,6 @@ function TopAppBar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            onClick={() => {
-              navigate("/");
-            }}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -170,7 +178,7 @@ function TopAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={currentUser?.displayName ?? ""} src={imageUrl} />
               </IconButton>
             </Tooltip>
             <Menu
