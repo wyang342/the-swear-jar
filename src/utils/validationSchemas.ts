@@ -40,3 +40,10 @@ export const changePasswordSchema = yup.object({
     .required("Please re-enter your new password")
     .oneOf([yup.ref("newPassword")], "Passwords must match"),
 });
+
+export const editProfileSchema = yup.object({
+  newNickname: yup
+    .string()
+    .required("Nickname should not be empty")
+    .max(20, "Nickname should be less than 20 characters."),
+});

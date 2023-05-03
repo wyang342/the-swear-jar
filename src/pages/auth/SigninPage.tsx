@@ -5,7 +5,6 @@ import {
   Box,
   Typography,
   Container,
-  Alert,
   Link,
   Grid,
 } from "@mui/material";
@@ -15,6 +14,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useFormik } from "formik";
 import { Link as RouterLink } from "react-router-dom";
 import { signInSchema } from "../../utils/validationSchemas";
+import ErrorAlert from "../../components/Alerts/ErrorAlert";
 
 function SigninPage() {
   const { currentUser } = useContext(AuthContext);
@@ -70,11 +70,11 @@ function SigninPage() {
         </Typography>
 
         {error ? (
-          <Alert sx={{ marginTop: 2 }} severity="error">
+          <ErrorAlert>
             Incorrect credentials or too many attempts.
             <br />
             Please try again.
-          </Alert>
+          </ErrorAlert>
         ) : null}
 
         <Box

@@ -1,12 +1,5 @@
 import React, { useState, useContext } from "react";
-import {
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Container,
-  Alert,
-} from "@mui/material";
+import { Button, TextField, Box, Typography, Container } from "@mui/material";
 import { useFormik } from "formik";
 import { changePasswordSchema } from "../../utils/validationSchemas";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +9,8 @@ import {
   EmailAuthProvider,
 } from "firebase/auth";
 import { AuthContext } from "../../context/AuthContext";
+import SuccessAlert from "../../components/Alerts/SuccessAlert";
+import ErrorAlert from "../../components/Alerts/ErrorAlert";
 
 function ChangePasswordPage() {
   const { currentUser, signOut } = useContext(AuthContext);
@@ -85,19 +80,19 @@ function ChangePasswordPage() {
         </Typography>
 
         {error ? (
-          <Alert sx={{ marginTop: 2 }} severity="error">
+          <ErrorAlert>
             {error}
             <br />
             Please try again.
-          </Alert>
+          </ErrorAlert>
         ) : null}
 
         {success ? (
-          <Alert sx={{ marginY: 2 }} severity="success">
+          <SuccessAlert>
             Password successfully changed!
             <br />
             Please sign in again.
-          </Alert>
+          </SuccessAlert>
         ) : null}
 
         {success ? (

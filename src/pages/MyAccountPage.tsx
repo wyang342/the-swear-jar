@@ -6,11 +6,11 @@ import {
   Typography,
   Button,
   Avatar,
-  Alert,
   LinearProgress,
 } from "@mui/material";
 import APIService from "../services/APIService";
 import { updateProfile } from "firebase/auth";
+import ErrorAlert from "../components/Alerts/ErrorAlert";
 
 function MyAccountPage() {
   const { currentUser } = useContext(AuthContext);
@@ -53,11 +53,11 @@ function MyAccountPage() {
       </Typography>
 
       {error ? (
-        <Alert sx={{ marginTop: 2 }} severity="error">
+        <ErrorAlert>
           {error}
           <br />
           Please try again.
-        </Alert>
+        </ErrorAlert>
       ) : null}
 
       {currentUser ? (
@@ -84,7 +84,11 @@ function MyAccountPage() {
         <br />
         Nickname: {currentUser?.displayName}
       </Typography>
-      {/* <Typography variant="body2">Nickname: {currentUser?.displayName}</Typography> */}
+
+      <Link component={RouterLink} to="/my-account/edit-profile">
+        Change Nickname
+      </Link>
+      <br />
 
       <Link component={RouterLink} to="/auth/change-password">
         Change Password

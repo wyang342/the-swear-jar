@@ -5,7 +5,6 @@ import {
   Box,
   Typography,
   Container,
-  Alert,
   Link,
   Grid,
 } from "@mui/material";
@@ -14,6 +13,7 @@ import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { signUpSchema } from "../../utils/validationSchemas";
 import { useFormik } from "formik";
+import ErrorAlert from "../../components/Alerts/ErrorAlert";
 
 function SignupPage() {
   const { currentUser } = useContext(AuthContext);
@@ -70,11 +70,11 @@ function SignupPage() {
         </Typography>
 
         {error ? (
-          <Alert sx={{ marginTop: 2 }} severity="error">
+          <ErrorAlert>
             An error occurred while signing up.
             <br />
             Please try again.
-          </Alert>
+          </ErrorAlert>
         ) : null}
 
         <Box

@@ -10,6 +10,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import ChangePasswordPage from "./pages/auth/ChangePasswordPage";
 import MyAccountPage from "./pages/MyAccountPage";
 import TopAppBar from "./components/TopAppBar";
+import EditProfilePage from "./pages/EditProfilePage";
 
 // App == Routes
 function App() {
@@ -38,6 +39,14 @@ function App() {
           element={
             <RequireAuth>
               <MyAccountPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="my-account/edit-profile"
+          element={
+            <RequireAuth>
+              <EditProfilePage />
             </RequireAuth>
           }
         />
