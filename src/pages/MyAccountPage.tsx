@@ -8,12 +8,12 @@ import { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import APIService from "../services/APIService";
 import { updateProfile } from "firebase/auth";
+import Alert from "@mui/material/Alert";
 
 function MyAccountPage() {
   const { currentUser } = useContext(AuthContext);
   const [imageUrl, setImageUrl] = useState<string>("");
-  // TODO: Add error handling
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string>("");
 
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -23,16 +23,21 @@ function MyAccountPage() {
     }
 
     const selectedImage = event.target.files[0];
-    const downloadURL = await APIService.uploadProfilePicture(
-      currentUser!,
-      selectedImage
-    );
-    setImageUrl(downloadURL);
+    try {
+      const downloadURL = await APIService.uploadProfilePicture(
+        currentUser!,
+        selectedImage
+      );
+      setImageUrl(downloadURL);
 
-    // Update the user's profile picture
-    await updateProfile(currentUser!, {
-      photoURL: downloadURL,
-    });
+      // Update the user's profile picture
+      await updateProfile(currentUser!, {
+        photoURL: downloadURL,
+      });
+    } catch (error) {
+      console.log(error);
+      setError("Error uploading image.");
+    }
 
     window.location.reload();
   };
@@ -47,6 +52,15 @@ function MyAccountPage() {
       <Typography component="h1" variant="h5">
         My Account
       </Typography>
+
+      {error ? (
+        <Alert sx={{ marginTop: 2 }} severity="error">
+          {error}
+          <br />
+          Please try again.
+        </Alert>
+      ) : null}
+
       <Avatar
         alt={currentUser?.displayName ?? ""}
         src={imageUrl}

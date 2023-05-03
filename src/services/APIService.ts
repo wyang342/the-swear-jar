@@ -18,16 +18,11 @@ class APIService {
   }
 
   static async uploadProfilePicture(currentUser: User, selectedImage: File) {
-    try {
-      const imageRef = ref(storage, `users/${currentUser!.uid}/profilePicture`);
-      await uploadBytes(imageRef, selectedImage);
-      const downloadURL = await getDownloadURL(imageRef);
+    const imageRef = ref(storage, `users/${currentUser!.uid}/profilePicture`);
+    await uploadBytes(imageRef, selectedImage);
+    const downloadURL = await getDownloadURL(imageRef);
 
-      return downloadURL;
-    } catch (error) {
-      console.log(error);
-      return "";
-    }
+    return downloadURL;
   }
 }
 
