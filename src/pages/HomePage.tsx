@@ -8,7 +8,7 @@ function HomePage() {
       <TopAppBar />
       <main>
         <Typography component="h1" variant="h5">
-          Your Groups
+          Your Jars
         </Typography>
       </main>
     </>

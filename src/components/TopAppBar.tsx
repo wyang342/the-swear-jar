@@ -18,7 +18,7 @@ import { Link } from "@mui/material";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 
-const pages = ["Groups"];
+const pages = ["Jars"];
 const settings = ["My Account", "Sign Out"];
 
 function TopAppBar() {
@@ -35,7 +35,7 @@ function TopAppBar() {
   };
 
   const handlePageClick = (page: string) => {
-    if (page === "Groups") {
+    if (page === "Jars") {
       navigate("/");
     }
     handleCloseNavMenu();
