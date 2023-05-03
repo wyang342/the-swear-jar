@@ -6,12 +6,11 @@ import {
   Typography,
   Button,
   Avatar,
-  CircularProgress,
   Alert,
+  LinearProgress,
 } from "@mui/material";
 import APIService from "../services/APIService";
 import { updateProfile } from "firebase/auth";
-// import LinearProgress from "@mui/material/Linea";
 
 function MyAccountPage() {
   const { currentUser } = useContext(AuthContext);
@@ -55,6 +54,7 @@ function MyAccountPage() {
 
   return (
     <main>
+      {loading ? <LinearProgress sx={{ marginBottom: 1 }} /> : ""}
       <Typography component="h1" variant="h5">
         My Account
       </Typography>
@@ -67,7 +67,6 @@ function MyAccountPage() {
         </Alert>
       ) : null}
 
-      <CircularProgress sx={{ width: 1000, height: 200 }} />
       <Avatar
         alt={currentUser?.displayName ?? ""}
         src={imageUrl}
