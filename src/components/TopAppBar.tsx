@@ -17,8 +17,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { Link } from "@mui/material";
 import { AuthContext } from "../context/AuthContext";
 import { useContext, useEffect, useState } from "react";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../config/firebase";
 import APIService from "../services/APIService";
 
 const pages = ["Jars"];
@@ -71,7 +69,7 @@ function TopAppBar() {
   // Gets profile picture on mount
   useEffect(() => {
     if (currentUser) {
-      APIService.getProfilePicture(setImageUrl, currentUser);
+      APIService.setProfilePictureUrl(setImageUrl, currentUser);
     }
   }, [currentUser]);
 

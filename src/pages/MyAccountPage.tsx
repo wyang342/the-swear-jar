@@ -13,6 +13,7 @@ import APIService from "../services/APIService";
 function MyAccountPage() {
   const { currentUser } = useContext(AuthContext);
   const [imageUrl, setImageUrl] = useState<string>("");
+  // TODO: Add error handling
   const [error, setError] = useState<string | null>(null);
 
   const handleImageChange = async (
@@ -36,7 +37,7 @@ function MyAccountPage() {
 
   // Gets profile picture on mount
   useEffect(() => {
-    APIService.getProfilePicture(setImageUrl, currentUser);
+    APIService.setProfilePictureUrl(setImageUrl, currentUser);
   }, [currentUser]);
 
   return (
