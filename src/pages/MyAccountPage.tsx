@@ -5,10 +5,9 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import { useState, useEffect } from "react";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../config/firebase";
 import Avatar from "@mui/material/Avatar";
 import APIService from "../services/APIService";
+import { updateProfile } from "firebase/auth";
 
 function MyAccountPage() {
   const { currentUser } = useContext(AuthContext);
@@ -19,18 +18,21 @@ function MyAccountPage() {
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    if (!event.target.files) {
+    if (!event.target.files || !currentUser) {
       return;
     }
 
-    // Select the image
     const selectedImage = event.target.files[0];
-
-    // Upload the image
-    const imageRef = ref(storage, `users/${currentUser?.uid}/profilePicture`);
-    await uploadBytes(imageRef, selectedImage);
-    const downloadURL = await getDownloadURL(imageRef);
+    const downloadURL = await APIService.uploadProfilePicture(
+      currentUser!,
+      selectedImage
+    );
     setImageUrl(downloadURL);
+
+    // Update the user's profile picture
+    await updateProfile(currentUser!, {
+      photoURL: downloadURL,
+    });
 
     window.location.reload();
   };

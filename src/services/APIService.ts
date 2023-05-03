@@ -1,16 +1,33 @@
-import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../config/firebase";
 import { User } from "firebase/auth";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 class APIService {
   static async setProfilePictureUrl(
     setImageUrl: React.Dispatch<React.SetStateAction<string>>,
     currentUser: User | null
   ) {
-    const imageRef = ref(storage, `users/${currentUser?.uid}/profilePicture`);
-    const downloadURL = await getDownloadURL(imageRef);
+    try {
+      const imageRef = ref(storage, `users/${currentUser?.uid}/profilePicture`);
+      const downloadURL = await getDownloadURL(imageRef);
 
-    setImageUrl(downloadURL);
+      setImageUrl(downloadURL);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async uploadProfilePicture(currentUser: User, selectedImage: File) {
+    try {
+      const imageRef = ref(storage, `users/${currentUser!.uid}/profilePicture`);
+      await uploadBytes(imageRef, selectedImage);
+      const downloadURL = await getDownloadURL(imageRef);
+
+      return downloadURL;
+    } catch (error) {
+      console.log(error);
+      return "";
+    }
   }
 }
 
