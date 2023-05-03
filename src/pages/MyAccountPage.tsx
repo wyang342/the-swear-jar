@@ -1,19 +1,23 @@
 import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
-import { Button } from "@mui/material";
-import { useState, useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
+import {
+  Link,
+  Typography,
+  Button,
+  Avatar,
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 import APIService from "../services/APIService";
 import { updateProfile } from "firebase/auth";
-import Alert from "@mui/material/Alert";
+// import LinearProgress from "@mui/material/Linea";
 
 function MyAccountPage() {
   const { currentUser } = useContext(AuthContext);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -22,6 +26,7 @@ function MyAccountPage() {
       return;
     }
 
+    setLoading(true);
     const selectedImage = event.target.files[0];
     try {
       const downloadURL = await APIService.uploadProfilePicture(
@@ -39,6 +44,7 @@ function MyAccountPage() {
       setError("Error uploading image.");
     }
 
+    setLoading(false);
     window.location.reload();
   };
 
@@ -61,6 +67,7 @@ function MyAccountPage() {
         </Alert>
       ) : null}
 
+      <CircularProgress sx={{ width: 1000, height: 200 }} />
       <Avatar
         alt={currentUser?.displayName ?? ""}
         src={imageUrl}

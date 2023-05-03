@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import Alert from "@mui/material/Alert";
+import {
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Container,
+  Alert,
+} from "@mui/material";
 import { useFormik } from "formik";
 import { changePasswordSchema } from "../../utils/validationSchemas";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +16,6 @@ import {
   EmailAuthProvider,
 } from "firebase/auth";
 import { AuthContext } from "../../context/AuthContext";
-import TopAppBar from "../../components/TopAppBar";
 
 function ChangePasswordPage() {
   const { currentUser, signOut } = useContext(AuthContext);

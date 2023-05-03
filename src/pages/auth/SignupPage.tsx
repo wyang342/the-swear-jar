@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
+import {
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Container,
+  Alert,
+  Link,
+  Grid,
+} from "@mui/material";
 import { signUpDefault } from "../../config/firebase";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import { signUpSchema } from "../../utils/validationSchemas";
 import { useFormik } from "formik";
-import { Alert } from "@mui/material";
 
 function SignupPage() {
   const { currentUser } = useContext(AuthContext);
