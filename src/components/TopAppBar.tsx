@@ -18,14 +18,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { useContext, useEffect, useState } from "react";
-import APIService from "../services/APIService";
+import { useContext } from "react";
 
 const pages = ["Jars"];
 const settings = ["My Account", "Sign Out"];
 
 function TopAppBar() {
-  const [imageUrl, setImageUrl] = useState<string>("");
   const navigate = useNavigate();
   const { currentUser, signOut } = useContext(AuthContext);
 
@@ -69,11 +67,11 @@ function TopAppBar() {
   };
 
   // Gets profile picture on mount
-  useEffect(() => {
-    if (currentUser) {
-      APIService.setProfilePictureUrl(setImageUrl, currentUser);
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     APIService.setProfilePictureUrl(setImageUrl, currentUser);
+  //   }
+  // }, [currentUser]);
 
   return (
     <AppBar position="static">
@@ -178,7 +176,12 @@ function TopAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={currentUser?.displayName ?? ""} src={imageUrl} />
+                {currentUser ? (
+                  <Avatar
+                    alt={currentUser!.displayName ?? ""}
+                    src={currentUser!.photoURL ?? ""}
+                  />
+                ) : null}
               </IconButton>
             </Tooltip>
             <Menu

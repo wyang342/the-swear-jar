@@ -1,5 +1,5 @@
 import { AuthContext } from "../context/AuthContext";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Link,
@@ -14,7 +14,6 @@ import { updateProfile } from "firebase/auth";
 
 function MyAccountPage() {
   const { currentUser } = useContext(AuthContext);
-  const [imageUrl, setImageUrl] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -32,7 +31,6 @@ function MyAccountPage() {
         currentUser!,
         selectedImage
       );
-      setImageUrl(downloadURL);
 
       // Update the user's profile picture
       await updateProfile(currentUser!, {
@@ -46,11 +44,6 @@ function MyAccountPage() {
     setLoading(false);
     window.location.reload();
   };
-
-  // Gets profile picture on mount
-  useEffect(() => {
-    APIService.setProfilePictureUrl(setImageUrl, currentUser);
-  }, [currentUser]);
 
   return (
     <main>
@@ -67,11 +60,14 @@ function MyAccountPage() {
         </Alert>
       ) : null}
 
-      <Avatar
-        alt={currentUser?.displayName ?? ""}
-        src={imageUrl}
-        sx={{ width: 200, height: 200 }}
-      />
+      {currentUser ? (
+        <Avatar
+          alt={currentUser!.displayName ?? ""}
+          src={currentUser!.photoURL ?? ""}
+          sx={{ width: 200, height: 200 }}
+        />
+      ) : null}
+
       <Button variant="contained" component="label">
         Change Photo
         <input
@@ -84,7 +80,9 @@ function MyAccountPage() {
       </Button>
 
       <Typography variant="body1">
-        Logged in as: {currentUser?.email}
+        Email: {currentUser?.email}
+        <br />
+        Nickname: {currentUser?.displayName}
       </Typography>
       {/* <Typography variant="body2">Nickname: {currentUser?.displayName}</Typography> */}
 
