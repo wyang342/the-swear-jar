@@ -1,16 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import {
   Button,
   TextField,
   Box,
   Typography,
   Container,
-  Link,
-  Grid,
   LinearProgress,
 } from "@mui/material";
-import { signUpDefault } from "../../config/firebase";
-import { useNavigate, Link as RouterLink } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { createJarSchema } from "../../utils/validationSchemas";
 import { useFormik } from "formik";
@@ -20,7 +17,7 @@ import APIService from "../../services/APIService";
 
 function CreateJarPage() {
   const { currentUser } = useContext(AuthContext);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -29,8 +26,8 @@ function CreateJarPage() {
       name: "",
       commonPurpose: "",
       jarFillingAction: "",
-      costPerAction: 0,
-      goalAmount: 0,
+      costPerAction: "",
+      goalAmount: "",
     },
     validationSchema: createJarSchema,
     onSubmit: async (values) => {
@@ -38,8 +35,8 @@ function CreateJarPage() {
       const name1 = values.name;
       const commonPurpose1 = values.commonPurpose;
       const jarFillingAction1 = values.jarFillingAction;
-      const costPerAction1 = values.costPerAction;
-      const goalAmount1 = values.goalAmount;
+      const costPerAction1: number = parseInt(values.costPerAction);
+      const goalAmount1: number = parseInt(values.goalAmount);
 
       if (!currentUser) {
         setError(true);
@@ -56,7 +53,7 @@ function CreateJarPage() {
           name: name1,
           leader: uid,
           members: {
-            uid: "joined",
+            [uid]: "joined",
           },
           common_purpose: commonPurpose1,
           jar_filling_action: jarFillingAction1,
@@ -64,7 +61,7 @@ function CreateJarPage() {
           goal_amount: goalAmount1,
           current_amount: 0,
           contributions: {
-            uid: 0,
+            [uid]: 0,
           },
         };
 

@@ -10,9 +10,9 @@ import {
   ref as databaseRef,
   push,
   child,
-  update,
+  set,
 } from "firebase/database";
-import { JarData, UserJarData } from "../utils/types";
+import { JarData } from "../utils/types";
 
 class APIService {
   static async uploadProfilePicture(currentUser: User, selectedImage: File) {
@@ -28,25 +28,17 @@ class APIService {
 
   static async createJar(currentUser: User, jarData: JarData) {
     const db = getDatabase();
-
     const uid = currentUser.uid;
 
     // Get new jar key
     const jarKey = push(child(databaseRef(db), "jars")).key;
-    console.log({ jarKey });
     if (!jarKey) {
       throw new Error("Jar key is null");
     }
 
-    const userJarData = {
-      uid: jarKey,
-    };
-
-    const updates = new Map<string, JarData | UserJarData>();
-    updates.set(`/jars/${jarKey}`, jarData);
-    updates.set(`/users/${uid}/jars/`, userJarData);
-
-    update(databaseRef(db), updates);
+    // Create Jar
+    await set(databaseRef(db, `jars/${jarKey}`), jarData);
+    await set(databaseRef(db, `users/${uid}/jars/${jarKey}`), "joined");
   }
 
   // static const sendInvite()

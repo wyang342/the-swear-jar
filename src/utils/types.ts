@@ -13,7 +13,3 @@ export interface JarData {
     [uid: string]: number;
   };
 }
-
-export interface UserJarData {
-  [jar_id: string]: string;
-}
