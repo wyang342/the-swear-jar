@@ -6,11 +6,11 @@ export interface JarData {
   };
   common_purpose: string;
   jar_filling_action: string;
-  money_per_action: number;
-  goal: number;
+  cost_per_action: number;
+  goal_amount: number;
   current_amount: number;
   contributions: {
-    [uid: string]: string;
+    [uid: string]: number;
   };
 }
 

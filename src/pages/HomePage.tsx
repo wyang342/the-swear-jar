@@ -11,9 +11,11 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { green } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const card = (
     <>
@@ -57,7 +59,7 @@ function HomePage() {
             <Button
               variant="text"
               sx={{ height: "100%", width: "100%" }}
-              onClick={() => console.log("clicked")}
+              onClick={() => navigate("/jars/new")}
             >
               <AddIcon sx={{ color: green[500] }} fontSize="large" />
             </Button>

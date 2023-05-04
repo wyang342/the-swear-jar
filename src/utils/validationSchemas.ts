@@ -52,12 +52,23 @@ export const createJarSchema = yup.object({
   name: yup
     .string()
     .required("Jar name should not be empty")
-    .max(20, "Jar name should be less than 20 characters."),
-  common_purpose: yup
+    .max(30, "Jar name should be less than 30 characters."),
+  commonPurpose: yup
     .string()
-    .required("Common purpose should not be empty")
-    .max(20, "Common purpose should be less than 20 characters."),
-  jar_filling_action: yup
+    .max(50, "Common purpose should be less than 50 characters."),
+  jarFillingAction: yup
     .string()
     .required("Jar filling action should not be empty")
-    .max(20, "Jar filling action should be less than 20 characters."),
+    .max(50, "Jar filling action should be less than 50 characters."),
+  costPerAction: yup
+    .number()
+    .required("Money per action should not be empty")
+    .positive("Money per action should be positive")
+    .integer("Money per action should be an integer")
+    .max(1000, "Money per action should be less than 1,000"),
+  goalAmount: yup
+    .number()
+    .positive("Goal should be positive")
+    .integer("Goal should be an integer")
+    .max(1000000, "Goal should be less than 1,000,000"),
+});
