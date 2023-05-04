@@ -1,43 +1,43 @@
-import Typography from "@mui/material/Typography";
 import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
-import {
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Grid,
-  LinearProgress,
-} from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { Card, Button, Grid, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import JarCard from "../components/JarCard";
+import APIService from "../services/APIService";
+import { JarData } from "../utils/types";
 
 function HomePage() {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [jars, setJars] = useState<JarData[]>([]);
 
-  const card = (
-    <>
-      <CardContent>
-        <LinearProgress
-          variant="determinate"
-          value={10}
-          sx={{ marginBottom: 1 }}
+  useEffect(() => {
+    const getAndSetJars = async () => {
+      await APIService.getJars(currentUser!, setJars);
+    };
+
+    getAndSetJars();
+  }, [currentUser]);
+
+  const renderJarCards = () => {
+    console.log("render jar cards called");
+    console.log(jars);
+    if (jars.length === 0) {
+      return null;
+    }
+    return jars.map((jar) => (
+      <Grid item xs={4} key={jar.name}>
+        <JarCard
+          progress={(jar.current_amount / jar.goal_amount) * 100}
+          name={jar.name}
+          numMembers={Object.keys(jar.members).length}
+          commonPurpose={jar.common_purpose}
         />
-        <Typography variant="h6" component="div">
-          The Holy Trinity
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          4 members
-        </Typography>
-        <Typography variant="body2">Saving up for our trip to japan</Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Go to Jar</Button>
-      </CardActions>
-    </>
-  );
+      </Grid>
+    ));
+  };
 
   return (
     <main>
@@ -47,13 +47,14 @@ function HomePage() {
 
       <Grid container spacing={2} alignItems="stretch">
         <Grid item xs={4}>
-          <Card variant="outlined">{card}</Card>
+          <JarCard
+            progress={30}
+            name="The Holy Trinity"
+            numMembers={5}
+            commonPurpose="Save up for Japan"
+          />
         </Grid>
-
-        <Grid item xs={4}>
-          <Card variant="outlined">{card}</Card>
-        </Grid>
-
+        {renderJarCards()}
         <Grid item xs={4}>
           <Card variant="outlined" sx={{ height: "100%" }}>
             <Button
