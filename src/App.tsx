@@ -11,6 +11,7 @@ import ChangePasswordPage from "./pages/auth/ChangePasswordPage";
 import MyAccountPage from "./pages/MyAccountPage";
 import TopAppBar from "./components/TopAppBar";
 import EditProfilePage from "./pages/EditProfilePage";
+import CreateJarPage from "./pages/jars/CreateJarPage";
 
 // App == Routes
 function App() {
@@ -47,6 +48,14 @@ function App() {
           element={
             <RequireAuth>
               <EditProfilePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="jars/new"
+          element={
+            <RequireAuth>
+              <CreateJarPage />
             </RequireAuth>
           }
         />

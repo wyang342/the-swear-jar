@@ -47,3 +47,17 @@ export const editProfileSchema = yup.object({
     .required("Nickname should not be empty")
     .max(20, "Nickname should be less than 20 characters."),
 });
+
+export const createJarSchema = yup.object({
+  name: yup
+    .string()
+    .required("Jar name should not be empty")
+    .max(20, "Jar name should be less than 20 characters."),
+  common_purpose: yup
+    .string()
+    .required("Common purpose should not be empty")
+    .max(20, "Common purpose should be less than 20 characters."),
+  jar_filling_action: yup
+    .string()
+    .required("Jar filling action should not be empty")
+    .max(20, "Jar filling action should be less than 20 characters."),
