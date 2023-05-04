@@ -10,6 +10,7 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { getStorage } from "firebase/storage";
+import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -20,6 +21,7 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -46,5 +48,8 @@ export function userStateListener(callback: NextOrObserver<User>) {
 
 // Storage
 export const storage = getStorage(firebaseApp);
+
+// Database
+export const database = getDatabase(firebaseApp);
 
 export default firebaseApp;
