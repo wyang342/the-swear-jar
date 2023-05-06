@@ -19,6 +19,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { useContext, useState } from "react";
 import APIService from "../../services/APIService";
 import { AuthContext } from "../../context/AuthContext";
+import NotFoundPage from "../NotFoundPage";
 
 export default function JarPage() {
   // Fetch data
@@ -67,9 +68,9 @@ export default function JarPage() {
   };
 
   const handleDeleteJar = async () => {
-    if (currentUser && status === "success" && jarId) {
+    if (status === "success" && jarId) {
       setDeleting(true);
-      await APIService.deleteJar(currentUser!, jarId!, jarData);
+      await APIService.deleteJar(jarId!, jarData);
       navigate("/");
       setDeleting(false);
     }
@@ -77,6 +78,10 @@ export default function JarPage() {
 
   if (deleting) {
     return <LinearProgress />;
+  }
+
+  if (!jarData) {
+    return <NotFoundPage />;
   }
 
   return status === "success" ? (
@@ -121,9 +126,11 @@ export default function JarPage() {
         TODO
       </Typography>
 
-      <Button variant="contained" onClick={handleClickOpen} color="error">
-        Delete Jar
-      </Button>
+      {currentUser?.uid === jarData.leader ? (
+        <Button variant="contained" onClick={handleClickOpen} color="error">
+          Delete Jar
+        </Button>
+      ) : null}
 
       <Dialog
         open={dialogOpen}

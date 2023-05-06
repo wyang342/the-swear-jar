@@ -126,9 +126,8 @@ class APIService {
   }
 
   // Note that this function does not remove invitations
-  static async deleteJar(currentUser: User, jarId: string, jarData: JarModel) {
+  static async deleteJar(jarId: string, jarData: JarModel) {
     const db = getDatabase();
-    const uid = currentUser.uid;
 
     // Delete jar from every user
     for (const user in jarData.contributions) {
