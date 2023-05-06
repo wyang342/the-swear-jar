@@ -8,6 +8,9 @@ import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
 import { CssBaseline } from "@mui/material";
+import { FirebaseAppProvider, DatabaseProvider } from "reactfire";
+import { firebaseConfig as config } from "./config/firebase";
+import { database as db } from "./config/firebase";
 
 // Roboto font for Material UI
 import "@fontsource/roboto/300.css";
@@ -40,8 +43,12 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
+          <FirebaseAppProvider firebaseConfig={config}>
+            <DatabaseProvider sdk={db}>
+              <CssBaseline />
+              <App />
+            </DatabaseProvider>
+          </FirebaseAppProvider>
         </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
