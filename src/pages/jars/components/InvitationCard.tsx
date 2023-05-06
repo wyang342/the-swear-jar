@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import { ref } from "firebase/database";
-import { JarModel } from "../../../models/JarModel";
 import JarName from "./JarName";
 import { InvitationModel } from "../../../models/InvitationModel";
 import APIService from "../../../services/APIService";
@@ -55,7 +54,20 @@ export default function InvitationCard({ invitationId }: InvitationCardProps) {
           >
             Accept
           </Button>
-          <Button size="small" color="error">
+          <Button
+            size="small"
+            color="error"
+            onClick={async () => {
+              if (!currentUser) {
+                return;
+              }
+              await APIService.deleteInvitation(
+                currentUser!,
+                invitationId,
+                invitationData.jar_id
+              );
+            }}
+          >
             Decline
           </Button>
         </CardActions>

@@ -104,6 +104,17 @@ class APIService {
     // Add jar to user
     await set(databaseRef(db, `users/${uid}/jars/${jarId}`), true);
 
+    await APIService.deleteInvitation(currentUser, invitationId, jarId);
+  }
+
+  static async deleteInvitation(
+    currentUser: User,
+    invitationId: string,
+    jarId: string
+  ) {
+    const db = getDatabase();
+    const uid = currentUser.uid;
+
     // Delete invitation from user
     await remove(databaseRef(db, `users/${uid}/invitations/${invitationId}`));
 
@@ -113,21 +124,6 @@ class APIService {
     // Delete invitation
     await remove(databaseRef(db, `invitations/${invitationId}`));
   }
-
-  // static async declineInvitation(
-  //   currentUser: User,
-  //   invitationKey: string,
-  //   jar_id: string
-  // ) {
-  //   const db = getDatabase();
-  //   const uid = currentUser.uid;
-
-  //   // Delete invitation
-  //   await set(databaseRef(db, `invitations/${invitationKey}`), null);
-
-  //   // Delete jar from user
-  //   await set(databaseRef(db, `users/${uid}/jars/${jar_id}`), null);
-  // }
 }
 
 export default APIService;
