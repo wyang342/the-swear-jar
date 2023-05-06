@@ -11,7 +11,6 @@ import {
   push,
   child,
   set,
-  onValue,
 } from "firebase/database";
 import { JarModel } from "../models/JarModel";
 
@@ -40,35 +39,6 @@ class APIService {
     // Create Jar
     await set(databaseRef(db, `jars/${jarKey}`), jarData);
     await set(databaseRef(db, `users/${uid}/jars/${jarKey}`), "joined");
-  }
-
-  static async getJars(
-    currentUser: User,
-    setJars: React.Dispatch<React.SetStateAction<JarModel[]>>
-  ) {
-    const db = getDatabase();
-    const userJarsRef = databaseRef(db, `users/${currentUser.uid}/jars`);
-    const jarRef = databaseRef(db, "jars");
-
-    return onValue(userJarsRef, (snapshot) => {
-      const userJars = snapshot.val();
-
-      if (userJars) {
-        const jarKeys = Object.keys(userJars);
-        const jars: JarModel[] = [];
-
-        jarKeys.forEach((key) => {
-          return onValue(child(jarRef, key), (snapshot) => {
-            const jar = snapshot.val();
-            if (jar) {
-              jars.push(jar);
-            }
-          });
-        });
-
-        setJars(jars);
-      }
-    });
   }
 }
 
