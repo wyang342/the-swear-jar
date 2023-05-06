@@ -6,37 +6,65 @@ import { green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import JarCard from "../components/JarCard";
 import APIService from "../services/APIService";
-import { JarData } from "../utils/types";
+import { JarModel } from "../models/JarModel";
+import {
+  useDatabase,
+  useDatabaseListData,
+  useDatabaseObjectData,
+} from "reactfire";
+import { equalTo, ref } from "firebase/database";
+import { query } from "firebase/database";
+import JarCardTest from "../components/JarCardTest";
 
 function HomePage() {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [jars, setJars] = useState<JarData[]>([]);
+  const database = useDatabase();
+  const userJarsRef = ref(database, `users/${currentUser?.uid}/jars`);
+  const { status, data: jarIds } = useDatabaseObjectData(userJarsRef);
+  // const [jars, setJars] = useState<JarModel[]>([]);
+  // const jarRef = ref(database, "jars");
+  // const jarsQuery = query(jarRef, equalTo({}));
+  // const { status: jarStatus, data: jarData } = useDatabaseListData();
 
-  useEffect(() => {
-    const getAndSetJars = async () => {
-      await APIService.getJars(currentUser!, setJars);
-    };
+  // const renderJarCards = () => {
+  //   console.log("render jar cards called");
+  //   console.log(jars);
+  //   if (jars.length === 0) {
+  //     return null;
+  //   }
+  //   return jars.map((jar) => (
+  //     <Grid item xs={4} key={jar.name}>
+  //       <JarCard
+  //         progress={(jar.current_amount / jar.goal_amount) * 100}
+  //         name={jar.name}
+  //         numMembers={Object.keys(jar.members).length}
+  //         commonPurpose={jar.common_purpose}
+  //       />
+  //     </Grid>
+  //   ));
+  // };
 
-    getAndSetJars();
-  }, [currentUser]);
+  // if (status === "success") {
+  //   console.log(jarIds);
+
+  //   for (const jarId of Object.keys(jarIds)) {
+  //     const jarRef = ref(database, `jars/${jarId}`);
+  //     const { status: jarStatus, data: jarData } =
+  //       useDatabaseObjectData(jarRef);
+  //     console.log(jarData);
+  //   }
+  // }
 
   const renderJarCards = () => {
-    console.log("render jar cards called");
-    console.log(jars);
-    if (jars.length === 0) {
-      return null;
+    const jarCards = [];
+
+    for (const jarId of Object.keys(jarIds as object)) {
+      if (jarId === "NO_ID_FIELD") continue;
+      jarCards.push(<JarCardTest jarId={jarId} key={jarId} />);
     }
-    return jars.map((jar) => (
-      <Grid item xs={4} key={jar.name}>
-        <JarCard
-          progress={(jar.current_amount / jar.goal_amount) * 100}
-          name={jar.name}
-          numMembers={Object.keys(jar.members).length}
-          commonPurpose={jar.common_purpose}
-        />
-      </Grid>
-    ));
+
+    return jarCards;
   };
 
   return (
@@ -54,7 +82,7 @@ function HomePage() {
             commonPurpose="Save up for Japan"
           />
         </Grid>
-        {renderJarCards()}
+        {status === "success" ? renderJarCards() : null}
         <Grid item xs={4}>
           <Card variant="outlined" sx={{ height: "100%" }}>
             <Button

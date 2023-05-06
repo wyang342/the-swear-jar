@@ -12,7 +12,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { createJarSchema } from "../../utils/validationSchemas";
 import { useFormik } from "formik";
 import ErrorAlert from "../../components/Alerts/ErrorAlert";
-import { JarData } from "../../utils/types";
+import { JarModel } from "../../models/JarModel";
 import APIService from "../../services/APIService";
 
 function CreateJarPage() {
@@ -49,7 +49,7 @@ function CreateJarPage() {
 
         const uid = currentUser!.uid;
 
-        const jarData: JarData = {
+        const jarData: JarModel = {
           name: name1,
           leader: uid,
           members: {

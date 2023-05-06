@@ -13,7 +13,7 @@ import {
   set,
   onValue,
 } from "firebase/database";
-import { JarData } from "../utils/types";
+import { JarModel } from "../models/JarModel";
 
 class APIService {
   static async uploadProfilePicture(currentUser: User, selectedImage: File) {
@@ -27,7 +27,7 @@ class APIService {
     return downloadURL;
   }
 
-  static async createJar(currentUser: User, jarData: JarData) {
+  static async createJar(currentUser: User, jarData: JarModel) {
     const db = getDatabase();
     const uid = currentUser.uid;
 
@@ -44,7 +44,7 @@ class APIService {
 
   static async getJars(
     currentUser: User,
-    setJars: React.Dispatch<React.SetStateAction<JarData[]>>
+    setJars: React.Dispatch<React.SetStateAction<JarModel[]>>
   ) {
     const db = getDatabase();
     const userJarsRef = databaseRef(db, `users/${currentUser.uid}/jars`);
@@ -55,7 +55,7 @@ class APIService {
 
       if (userJars) {
         const jarKeys = Object.keys(userJars);
-        const jars: JarData[] = [];
+        const jars: JarModel[] = [];
 
         jarKeys.forEach((key) => {
           return onValue(child(jarRef, key), (snapshot) => {

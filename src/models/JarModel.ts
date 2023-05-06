@@ -1,4 +1,4 @@
-export interface JarData {
+export interface JarModel {
   name: string;
   leader: string;
   members: {
