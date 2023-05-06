@@ -23,6 +23,13 @@ class APIService {
     await uploadBytes(imageRef, selectedImage);
     const downloadURL = await getDownloadURL(imageRef);
 
+    // Update in database
+    const db = getDatabase();
+    await set(
+      databaseRef(db, `users/${currentUser!.uid}/profilePicture`),
+      downloadURL
+    );
+
     return downloadURL;
   }
 

@@ -16,6 +16,8 @@ function HomePage() {
   const { status, data: jarIds } = useDatabaseObjectData(userJarsRef);
 
   const renderJarCards = () => {
+    if (!jarIds) return null;
+
     const jarCards = [];
 
     for (const jarId of Object.keys(jarIds as object)) {
@@ -29,7 +31,9 @@ function HomePage() {
   return (
     <main>
       <Typography component="h1" variant="h5" sx={{ marginBottom: 2 }}>
-        {currentUser?.displayName}'s Jars
+        {currentUser?.displayName === null
+          ? "My Jars"
+          : `${currentUser?.displayName}'s Jars`}
       </Typography>
 
       <Grid container spacing={2} alignItems="stretch">
