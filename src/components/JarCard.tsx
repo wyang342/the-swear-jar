@@ -10,6 +10,7 @@ import {
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import { ref } from "firebase/database";
 import { JarModel } from "../models/JarModel";
+import { Link as RouterLink } from "react-router-dom";
 
 interface JarCardProps {
   jarId: string;
@@ -38,7 +39,9 @@ function JarCard({ jarId }: JarCardProps) {
           <Typography variant="body2">{jarData.common_purpose}</Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Go to Jar</Button>
+          <Button size="small" component={RouterLink} to={`jars/${jarId}`}>
+            Go to Jar
+          </Button>
         </CardActions>
       </Card>
     </Grid>
