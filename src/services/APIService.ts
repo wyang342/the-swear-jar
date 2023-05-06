@@ -124,6 +124,20 @@ class APIService {
     // Delete invitation
     await remove(databaseRef(db, `invitations/${invitationId}`));
   }
+
+  // Note that this function does not remove invitations
+  static async deleteJar(currentUser: User, jarId: string, jarData: JarModel) {
+    const db = getDatabase();
+    const uid = currentUser.uid;
+
+    // Delete jar from every user
+    for (const user in jarData.contributions) {
+      await remove(databaseRef(db, `users/${user}/jars/${jarId}`));
+    }
+
+    // Delete jar
+    await remove(databaseRef(db, `jars/${jarId}`));
+  }
 }
 
 export default APIService;

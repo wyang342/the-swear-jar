@@ -44,7 +44,7 @@ export default function MemberTableRow({
           startIcon={<DeleteIcon color="error" />}
           color="error"
         >
-          Delete
+          Remove
         </Button>
       </TableCell>
     </TableRow>

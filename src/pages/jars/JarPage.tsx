@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import { ref } from "firebase/database";
 import { JarModel } from "../../models/JarModel";
@@ -8,15 +8,30 @@ import {
   Button,
   AvatarGroup,
   Link,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import MemberAvatar from "./components/MemberAvatar";
 import { Link as RouterLink } from "react-router-dom";
+import { useContext, useState } from "react";
+import APIService from "../../services/APIService";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function JarPage() {
+  // Fetch data
   const { jarId } = useParams<{ jarId: string }>();
   const database = useDatabase();
   const jarsRef = ref(database, `jars/${jarId}`);
   const { status, data: jarData } = useDatabaseObjectData<JarModel>(jarsRef);
+  const { currentUser } = useContext(AuthContext);
+
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const [deleting, setDeleting] = useState<boolean>(false);
 
   const renderMemberAvatars = () => {
     const memberAvatars = [];
@@ -43,7 +58,26 @@ export default function JarPage() {
     );
   };
 
-  if (status === "success") console.log(jarData);
+  const handleClickOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
+
+  const handleDeleteJar = async () => {
+    if (currentUser && status === "success" && jarId) {
+      setDeleting(true);
+      await APIService.deleteJar(currentUser!, jarId!, jarData);
+      navigate("/");
+      setDeleting(false);
+    }
+  };
+
+  if (deleting) {
+    return <LinearProgress />;
+  }
 
   return status === "success" ? (
     <main>
@@ -86,6 +120,35 @@ export default function JarPage() {
       <Typography variant="body1" sx={{ marginBottom: 2 }}>
         TODO
       </Typography>
+
+      <Button variant="contained" onClick={handleClickOpen} color="error">
+        Delete Jar
+      </Button>
+
+      <Dialog
+        open={dialogOpen}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Delete {jarData.name}?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This will delete the jar and all of its data. This action cannot be
+            undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteJar} color="error">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </main>
   ) : null;
 }
