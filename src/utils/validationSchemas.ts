@@ -73,3 +73,10 @@ export const createJarSchema = yup.object({
     .integer("Goal should be an integer")
     .max(1000000, "Goal should be less than 1,000,000"),
 });
+
+export const inviteUserSchema = yup.object({
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+});

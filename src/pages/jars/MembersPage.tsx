@@ -7,12 +7,12 @@ import {
   TableRow,
   TableCell,
   TableHead,
-  TextField,
 } from "@mui/material";
 import { ref } from "firebase/database";
 import { JarModel } from "../../models/JarModel";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import MemberTableRow from "./components/MemberTableRow";
+import InviteForm from "./components/InviteForm";
 
 export default function MembersPage() {
   const { jarId } = useParams<{ jarId: string }>();
@@ -52,11 +52,7 @@ export default function MembersPage() {
         </TableHead>
         <TableBody>{renderMemberTableRows()}</TableBody>
       </Table>
-
-      <Typography component="h2" variant="h6">
-        Invite
-      </Typography>
-      <TextField />
+      <InviteForm />
     </main>
   ) : null;
 }
