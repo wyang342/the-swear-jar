@@ -42,7 +42,7 @@ function HomePage() {
           : `${currentUser?.displayName}'s Jars`}
       </Typography>
 
-      <Grid container spacing={2} alignItems="stretch">
+      <Grid container spacing={2} alignContent="stretch">
         {status === "success" ? renderJarCards() : <CircularProgress />}
         <Grid item xs={4}>
           <Card variant="outlined" sx={{ height: "100%" }}>

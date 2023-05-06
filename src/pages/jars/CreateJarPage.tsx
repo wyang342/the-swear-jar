@@ -14,12 +14,14 @@ import { useFormik } from "formik";
 import ErrorAlert from "../../components/alerts/ErrorAlert";
 import { JarModel } from "../../models/JarModel";
 import APIService from "../../services/APIService";
+import SuccessAlert from "../../components/alerts/SuccessAlert";
+import { Link as RouterLink } from "react-router-dom";
 
 function CreateJarPage() {
   const { currentUser } = useContext(AuthContext);
-  // const navigate = useNavigate();
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const formik = useFormik({
     initialValues: {
@@ -46,6 +48,7 @@ function CreateJarPage() {
       try {
         setError(false);
         setLoading(true);
+        setSuccess(false);
 
         const uid = currentUser!.uid;
 
@@ -66,6 +69,7 @@ function CreateJarPage() {
         };
 
         await APIService.createJar(currentUser, jarData);
+        setSuccess(true);
       } catch (err: any) {
         console.log(err.message);
         setError(true);
@@ -98,102 +102,118 @@ function CreateJarPage() {
           </ErrorAlert>
         ) : null}
 
-        <Box
-          component="form"
-          onSubmit={formik.handleSubmit}
-          noValidate
-          sx={{ mt: 1 }}
-        >
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="name"
-            label="Name"
-            name="name"
-            autoFocus
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name && formik.errors.name}
-          />
-          <TextField
-            margin="normal"
-            fullWidth
-            id="commonPurpose"
-            label="Common Purpose"
-            name="commonPurpose"
-            autoFocus
-            value={formik.values.commonPurpose}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.commonPurpose &&
-              Boolean(formik.errors.commonPurpose)
-            }
-            helperText={
-              formik.touched.commonPurpose && formik.errors.commonPurpose
-            }
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="jarFillingAction"
-            label="Jar Filling Action"
-            name="jarFillingAction"
-            autoFocus
-            value={formik.values.jarFillingAction}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.jarFillingAction &&
-              Boolean(formik.errors.jarFillingAction)
-            }
-            helperText={
-              formik.touched.jarFillingAction && formik.errors.jarFillingAction
-            }
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="costPerAction"
-            label="$ Cost per Action"
-            name="costPerAction"
-            autoFocus
-            value={formik.values.costPerAction}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.costPerAction &&
-              Boolean(formik.errors.costPerAction)
-            }
-            helperText={
-              formik.touched.costPerAction && formik.errors.costPerAction
-            }
-          />
-          <TextField
-            margin="normal"
-            fullWidth
-            id="goalAmount"
-            label="$ Goal Amount"
-            name="goalAmount"
-            autoFocus
-            value={formik.values.goalAmount}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.goalAmount && Boolean(formik.errors.goalAmount)
-            }
-            helperText={formik.touched.goalAmount && formik.errors.goalAmount}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            disabled={loading}
-            sx={{ mt: 3, mb: 2, color: "white" }}
+        {success ? (
+          <>
+            <SuccessAlert>Jar successfully created!</SuccessAlert>
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to="/"
+              sx={{ mt: 2 }}
+            >
+              My Jars
+            </Button>
+          </>
+        ) : (
+          <Box
+            component="form"
+            onSubmit={formik.handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
           >
-            Submit
-          </Button>
-        </Box>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Name"
+              name="name"
+              autoFocus
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
+            />
+            <TextField
+              margin="normal"
+              fullWidth
+              id="commonPurpose"
+              label="Common Purpose"
+              name="commonPurpose"
+              autoFocus
+              value={formik.values.commonPurpose}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.commonPurpose &&
+                Boolean(formik.errors.commonPurpose)
+              }
+              helperText={
+                formik.touched.commonPurpose && formik.errors.commonPurpose
+              }
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="jarFillingAction"
+              label="Jar Filling Action"
+              name="jarFillingAction"
+              autoFocus
+              value={formik.values.jarFillingAction}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.jarFillingAction &&
+                Boolean(formik.errors.jarFillingAction)
+              }
+              helperText={
+                formik.touched.jarFillingAction &&
+                formik.errors.jarFillingAction
+              }
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="costPerAction"
+              label="$ Cost per Action"
+              name="costPerAction"
+              autoFocus
+              value={formik.values.costPerAction}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.costPerAction &&
+                Boolean(formik.errors.costPerAction)
+              }
+              helperText={
+                formik.touched.costPerAction && formik.errors.costPerAction
+              }
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="goalAmount"
+              label="$ Goal Amount"
+              name="goalAmount"
+              autoFocus
+              value={formik.values.goalAmount}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.goalAmount && Boolean(formik.errors.goalAmount)
+              }
+              helperText={formik.touched.goalAmount && formik.errors.goalAmount}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={loading}
+              sx={{ mt: 3, mb: 2, color: "white" }}
+            >
+              Submit
+            </Button>
+          </Box>
+        )}
       </Box>
     </Container>
   );

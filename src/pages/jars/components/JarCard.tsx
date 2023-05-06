@@ -23,7 +23,10 @@ function JarCard({ jarId }: JarCardProps) {
 
   return status === "success" ? (
     <Grid item xs={4}>
-      <Card variant="outlined">
+      <Card
+        variant="outlined"
+        sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+      >
         <CardContent>
           <LinearProgress
             variant="determinate"
@@ -38,7 +41,7 @@ function JarCard({ jarId }: JarCardProps) {
           </Typography>
           <Typography variant="body2">{jarData.common_purpose}</Typography>
         </CardContent>
-        <CardActions>
+        <CardActions sx={{ mt: "auto" }}>
           <Button size="small" component={RouterLink} to={`jars/${jarId}`}>
             Go to Jar
           </Button>

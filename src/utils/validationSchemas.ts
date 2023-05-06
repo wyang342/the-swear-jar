@@ -68,6 +68,7 @@ export const createJarSchema = yup.object({
     .max(1000, "Money per action should be less than 1,000"),
   goalAmount: yup
     .number()
+    .required("Goal should not be empty")
     .positive("Goal should be positive")
     .integer("Goal should be an integer")
     .max(1000000, "Goal should be less than 1,000,000"),
