@@ -1,6 +1,7 @@
 export interface UserModel {
   jars: object | undefined;
-  profile_picture: string | undefined;
+  profile_picture?: string;
   email: string;
-  nickname: string | undefined;
+  nickname?: string;
+  invitations?: object;
 }

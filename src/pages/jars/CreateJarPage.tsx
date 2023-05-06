@@ -55,9 +55,6 @@ function CreateJarPage() {
         const jarData: JarModel = {
           name: name1,
           leader: uid,
-          members: {
-            [uid]: "joined",
-          },
           common_purpose: commonPurpose1,
           jar_filling_action: jarFillingAction1,
           cost_per_action: costPerAction1,

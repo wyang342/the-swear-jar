@@ -8,13 +8,11 @@ import { UserModel } from "../../../models/UserModel";
 
 interface MemberTableRowProps {
   memberId: string;
-  memberStatus: string;
   leaderId: string;
 }
 
 export default function MemberTableRow({
   memberId,
-  memberStatus,
   leaderId,
 }: MemberTableRowProps) {
   const database = useDatabase();
@@ -28,7 +26,7 @@ export default function MemberTableRow({
         <MemberAvatar
           key={memberId}
           memberId={memberId}
-          memberStatus={memberStatus}
+          memberStatus="joined"
           isLeader={memberId === leaderId}
         />
         <Typography display="inline" variant="body1" sx={{ ml: 2 }}>

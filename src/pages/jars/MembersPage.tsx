@@ -23,13 +23,9 @@ export default function MembersPage() {
   const renderMemberTableRows = () => {
     const memberTableRows = [];
 
-    for (const [memberId, memberStatus] of Object.entries(jarData.members)) {
+    for (const memberId in jarData.contributions) {
       memberTableRows.push(
-        <MemberTableRow
-          memberId={memberId}
-          memberStatus={memberStatus}
-          leaderId={jarData.leader}
-        />
+        <MemberTableRow memberId={memberId} leaderId={jarData.leader} />
       );
     }
 

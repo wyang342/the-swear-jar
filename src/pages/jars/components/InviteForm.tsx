@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, Button, Grid } from "@mui/material";
+import { Box, Typography, TextField, Button } from "@mui/material";
 import { useFormik } from "formik";
 import { inviteUserSchema } from "../../../utils/validationSchemas";
 

@@ -21,12 +21,12 @@ export default function JarPage() {
   const renderMemberAvatars = () => {
     const memberAvatars = [];
 
-    for (const [memberId, memberStatus] of Object.entries(jarData.members)) {
+    for (const memberId in jarData.contributions) {
       memberAvatars.push(
         <MemberAvatar
           key={memberId}
           memberId={memberId}
-          memberStatus={memberStatus}
+          memberStatus="joined"
           isLeader={memberId === jarData.leader}
         />
       );
