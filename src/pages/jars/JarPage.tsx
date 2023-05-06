@@ -8,8 +8,10 @@ import {
   Box,
   Button,
   AvatarGroup,
+  Link,
 } from "@mui/material";
-import MemberAvatar from "../../components/MemberAvatar";
+import MemberAvatar from "../../components/members/MemberAvatar";
+import { Link as RouterLink } from "react-router-dom";
 
 export default function JarPage() {
   const { jarId } = useParams<{ jarId: string }>();
@@ -46,39 +48,45 @@ export default function JarPage() {
 
   return status === "success" ? (
     <main>
-      <Box>
-        <Typography component="h1" variant="h4" align="center" sx={{ mb: 2 }}>
-          {jarData.name}
-        </Typography>
+      <Typography component="h1" variant="h4" align="center" sx={{ mb: 2 }}>
+        {jarData.name}
+      </Typography>
 
-        <LinearProgress
-          variant="determinate"
-          value={(jarData.current_amount / jarData.goal_amount) * 100}
-        />
-        <Typography variant="subtitle1" sx={{ mb: 2 }}>
-          ${jarData.current_amount} in the jar (Goal: ${jarData.goal_amount})
-        </Typography>
+      <LinearProgress
+        variant="determinate"
+        value={(jarData.current_amount / jarData.goal_amount) * 100}
+      />
+      <Typography variant="subtitle1" sx={{ mb: 2 }}>
+        ${jarData.current_amount} in the jar (Goal: ${jarData.goal_amount})
+      </Typography>
 
-        <Typography variant="h6">What is the jar for?</Typography>
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          {jarData.common_purpose}
-        </Typography>
+      <Button variant="contained" sx={{ mb: 4 }}>
+        Pay ${jarData.cost_per_action}
+      </Button>
 
-        <Typography variant="h6">What action fills the jar?</Typography>
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          {jarData.jar_filling_action}
-        </Typography>
+      <br />
 
-        <Typography variant="h6">Contributions</Typography>
-        <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          TODO
-        </Typography>
+      <Typography variant="h6">
+        <Link component={RouterLink} to={`/jars/${jarId}/members`}>
+          Members
+        </Link>
+      </Typography>
+      {status === "success" ? renderMemberAvatars() : null}
 
-        <Typography variant="h6">Members</Typography>
-        {status === "success" ? renderMemberAvatars() : null}
+      <Typography variant="h6">What is the jar for?</Typography>
+      <Typography variant="body1" sx={{ marginBottom: 2 }}>
+        {jarData.common_purpose}
+      </Typography>
 
-        <Button variant="contained">Pay ${jarData.cost_per_action}</Button>
-      </Box>
+      <Typography variant="h6">What action fills the jar?</Typography>
+      <Typography variant="body1" sx={{ marginBottom: 2 }}>
+        {jarData.jar_filling_action}
+      </Typography>
+
+      <Typography variant="h6">Contributions</Typography>
+      <Typography variant="body1" sx={{ marginBottom: 2 }}>
+        TODO
+      </Typography>
     </main>
   ) : null;
 }

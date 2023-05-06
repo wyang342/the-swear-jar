@@ -14,7 +14,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useFormik } from "formik";
 import { Link as RouterLink } from "react-router-dom";
 import { signInSchema } from "../../utils/validationSchemas";
-import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
 
 function SigninPage() {
   const { currentUser } = useContext(AuthContext);

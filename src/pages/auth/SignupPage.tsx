@@ -13,7 +13,8 @@ import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { signUpSchema } from "../../utils/validationSchemas";
 import { useFormik } from "formik";
-import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
+import APIService from "../../services/APIService";
 
 function SignupPage() {
   const { currentUser } = useContext(AuthContext);
@@ -38,6 +39,10 @@ function SignupPage() {
         const userCredential = await signUpDefault(email, password);
 
         if (userCredential) {
+          const uid = userCredential.user.uid;
+
+          await APIService.initializeUser(uid, email);
+
           navigate("/");
         }
       } catch (err: any) {

@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { updateProfile } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
-import SuccessAlert from "../components/Alerts/SuccessAlert";
-import ErrorAlert from "../components/Alerts/ErrorAlert";
+import SuccessAlert from "../components/alerts/SuccessAlert";
+import ErrorAlert from "../components/alerts/ErrorAlert";
 
 function EditProfilePage() {
   const navigate = useNavigate();

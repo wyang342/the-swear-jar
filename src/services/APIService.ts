@@ -15,6 +15,15 @@ import {
 import { JarModel } from "../models/JarModel";
 
 class APIService {
+  static async initializeUser(uid: string, email: string) {
+    const db = getDatabase();
+    const userRef = databaseRef(db, `users/${uid}`);
+
+    await set(userRef, {
+      email: email,
+    });
+  }
+
   static async uploadProfilePicture(currentUser: User, selectedImage: File) {
     const imageRef = storageRef(
       storage,

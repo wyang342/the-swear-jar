@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import APIService from "../services/APIService";
 import { updateProfile } from "firebase/auth";
-import ErrorAlert from "../components/Alerts/ErrorAlert";
+import ErrorAlert from "../components/alerts/ErrorAlert";
 
 function MyAccountPage() {
   const { currentUser } = useContext(AuthContext);

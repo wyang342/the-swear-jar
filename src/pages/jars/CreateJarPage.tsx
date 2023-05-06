@@ -11,7 +11,7 @@ import {
 import { AuthContext } from "../../context/AuthContext";
 import { createJarSchema } from "../../utils/validationSchemas";
 import { useFormik } from "formik";
-import ErrorAlert from "../../components/Alerts/ErrorAlert";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
 import { JarModel } from "../../models/JarModel";
 import APIService from "../../services/APIService";
 
