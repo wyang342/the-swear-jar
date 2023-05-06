@@ -5,12 +5,12 @@ import RequireAuth from "./components/RequireAuth";
 // Import Pages
 import SigninPage from "./pages/auth/SigninPage";
 import SignupPage from "./pages/auth/SignupPage";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/jars/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ChangePasswordPage from "./pages/auth/ChangePasswordPage";
-import MyAccountPage from "./pages/MyAccountPage";
+import MyAccountPage from "./pages/account/MyAccountPage";
 import TopAppBar from "./components/TopAppBar";
-import EditProfilePage from "./pages/EditProfilePage";
+import EditProfilePage from "./pages/account/EditProfilePage";
 import CreateJarPage from "./pages/jars/CreateJarPage";
 import JarPage from "./pages/jars/JarPage";
 import MembersPage from "./pages/jars/MembersPage";

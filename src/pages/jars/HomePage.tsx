@@ -1,12 +1,18 @@
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
-import { Card, Button, Grid, Typography } from "@mui/material";
+import {
+  Card,
+  Button,
+  Grid,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { green } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import { ref } from "firebase/database";
-import JarCard from "../components/JarCard";
+import JarCard from "./components/JarCard";
 
 function HomePage() {
   const { currentUser } = useContext(AuthContext);
@@ -37,7 +43,7 @@ function HomePage() {
       </Typography>
 
       <Grid container spacing={2} alignItems="stretch">
-        {status === "success" ? renderJarCards() : null}
+        {status === "success" ? renderJarCards() : <CircularProgress />}
         <Grid item xs={4}>
           <Card variant="outlined" sx={{ height: "100%" }}>
             <Button

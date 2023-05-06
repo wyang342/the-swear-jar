@@ -8,7 +8,7 @@ import {
   Link,
   Grid,
 } from "@mui/material";
-import { signInDefault } from "../../config/firebase";
+import { signInDefault } from "../../lib/firebase";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useFormik } from "formik";

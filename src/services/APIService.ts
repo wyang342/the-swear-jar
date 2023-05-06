@@ -1,4 +1,4 @@
-import { storage } from "../config/firebase";
+import { storage } from "../lib/firebase";
 import { User } from "firebase/auth";
 import {
   ref as storageRef,

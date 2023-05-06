@@ -8,7 +8,7 @@ import {
   Link,
   Grid,
 } from "@mui/material";
-import { signUpDefault } from "../../config/firebase";
+import { signUpDefault } from "../../lib/firebase";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { signUpSchema } from "../../utils/validationSchemas";

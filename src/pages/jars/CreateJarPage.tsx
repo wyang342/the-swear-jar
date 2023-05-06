@@ -67,6 +67,7 @@ function CreateJarPage() {
 
         await APIService.createJar(currentUser, jarData);
       } catch (err: any) {
+        console.log(err.message);
         setError(true);
       }
 

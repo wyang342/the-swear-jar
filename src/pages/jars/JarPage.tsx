@@ -5,12 +5,11 @@ import { JarModel } from "../../models/JarModel";
 import {
   Typography,
   LinearProgress,
-  Box,
   Button,
   AvatarGroup,
   Link,
 } from "@mui/material";
-import MemberAvatar from "../../components/members/MemberAvatar";
+import MemberAvatar from "./components/MemberAvatar";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function JarPage() {

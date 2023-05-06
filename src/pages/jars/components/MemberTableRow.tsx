@@ -4,7 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MemberAvatar from "./MemberAvatar";
 import { ref } from "firebase/database";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
-import { UserModel } from "../../models/UserModel";
+import { UserModel } from "../../../models/UserModel";
 
 interface MemberTableRowProps {
   memberId: string;

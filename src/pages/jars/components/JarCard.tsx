@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import { ref } from "firebase/database";
-import { JarModel } from "../models/JarModel";
+import { JarModel } from "../../../models/JarModel";
 import { Link as RouterLink } from "react-router-dom";
 
 interface JarCardProps {

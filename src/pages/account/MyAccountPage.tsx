@@ -1,4 +1,4 @@
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useContext, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import {
@@ -8,9 +8,9 @@ import {
   Avatar,
   LinearProgress,
 } from "@mui/material";
-import APIService from "../services/APIService";
+import APIService from "../../services/APIService";
 import { updateProfile } from "firebase/auth";
-import ErrorAlert from "../components/alerts/ErrorAlert";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
 
 function MyAccountPage() {
   const { currentUser } = useContext(AuthContext);

@@ -7,14 +7,14 @@ import {
   LinearProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { editProfileSchema } from "../utils/validationSchemas";
+import { editProfileSchema } from "../../utils/validationSchemas";
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { updateProfile } from "firebase/auth";
-import { AuthContext } from "../context/AuthContext";
-import SuccessAlert from "../components/alerts/SuccessAlert";
-import ErrorAlert from "../components/alerts/ErrorAlert";
-import APIService from "../services/APIService";
+import { AuthContext } from "../../context/AuthContext";
+import SuccessAlert from "../../components/alerts/SuccessAlert";
+import ErrorAlert from "../../components/alerts/ErrorAlert";
+import APIService from "../../services/APIService";
 
 function EditProfilePage() {
   const navigate = useNavigate();

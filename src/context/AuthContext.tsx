@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { userStateListener, signOutDefault } from "../config/firebase";
+import { userStateListener, signOutDefault } from "../lib/firebase";
 
 export const AuthContext = createContext({
   currentUser: {} as User | null,

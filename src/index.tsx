@@ -9,8 +9,8 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
 import { CssBaseline } from "@mui/material";
 import { FirebaseAppProvider, DatabaseProvider } from "reactfire";
-import { firebaseConfig as config } from "./config/firebase";
-import { database as db } from "./config/firebase";
+import { firebaseConfig as config } from "./lib/firebase";
+import { database as db } from "./lib/firebase";
 
 // Roboto font for Material UI
 import "@fontsource/roboto/300.css";

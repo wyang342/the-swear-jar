@@ -12,7 +12,7 @@ import {
 import { ref } from "firebase/database";
 import { JarModel } from "../../models/JarModel";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
-import MemberTableRow from "../../components/members/MemberTableRow";
+import MemberTableRow from "./components/MemberTableRow";
 
 export default function MembersPage() {
   const { jarId } = useParams<{ jarId: string }>();
