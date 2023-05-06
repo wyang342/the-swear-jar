@@ -48,7 +48,7 @@ export default function MembersPage() {
         </TableHead>
         <TableBody>{renderMemberTableRows()}</TableBody>
       </Table>
-      <InviteForm />
+      <InviteForm jarId={jarId!} />
     </main>
   ) : null;
 }

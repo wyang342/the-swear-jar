@@ -11,8 +11,10 @@ import {
   push,
   child,
   set,
+  remove,
 } from "firebase/database";
 import { JarModel } from "../models/JarModel";
+import { InvitationModel } from "../models/InvitationModel";
 
 class APIService {
   static async initializeUser(uid: string, email: string) {
@@ -48,7 +50,7 @@ class APIService {
     return downloadURL;
   }
 
-  static async createJar(currentUser: User, jarData: JarModel) {
+  static async createJar(currentUser: User, model: JarModel) {
     const db = getDatabase();
     const uid = currentUser.uid;
 
@@ -59,9 +61,73 @@ class APIService {
     }
 
     // Create Jar
-    await set(databaseRef(db, `jars/${jarKey}`), jarData);
+    await set(databaseRef(db, `jars/${jarKey}`), model);
     await set(databaseRef(db, `users/${uid}/jars/${jarKey}`), "joined");
   }
+
+  static async inviteUser(model: InvitationModel) {
+    const db = getDatabase();
+
+    // Get new invitation key
+    const invitationKey = push(child(databaseRef(db), "invitations")).key;
+    if (!invitationKey) {
+      throw new Error("Invitation key is null");
+    }
+
+    // Create Invitation
+    await set(databaseRef(db, `invitations/${invitationKey}`), model);
+
+    // Add invitation to user
+    await set(
+      databaseRef(db, `users/${model.user_id}/invitations/${invitationKey}`),
+      true
+    );
+
+    // Add invitation to jar
+    await set(
+      databaseRef(db, `jars/${model.jar_id}/invitations/${invitationKey}`),
+      true
+    );
+  }
+
+  static async acceptInvitation(
+    currentUser: User,
+    invitationId: string,
+    jarId: string
+  ) {
+    const db = getDatabase();
+    const uid = currentUser.uid;
+
+    // Add user to jar
+    await set(databaseRef(db, `jars/${jarId}/contributions/${uid}`), 0);
+
+    // Add jar to user
+    await set(databaseRef(db, `users/${uid}/jars/${jarId}`), true);
+
+    // Delete invitation from user
+    await remove(databaseRef(db, `users/${uid}/invitations/${invitationId}`));
+
+    // Delete invitation from jar
+    await remove(databaseRef(db, `jars/${jarId}/invitations/${invitationId}`));
+
+    // Delete invitation
+    await remove(databaseRef(db, `invitations/${invitationId}`));
+  }
+
+  // static async declineInvitation(
+  //   currentUser: User,
+  //   invitationKey: string,
+  //   jar_id: string
+  // ) {
+  //   const db = getDatabase();
+  //   const uid = currentUser.uid;
+
+  //   // Delete invitation
+  //   await set(databaseRef(db, `invitations/${invitationKey}`), null);
+
+  //   // Delete jar from user
+  //   await set(databaseRef(db, `users/${uid}/jars/${jar_id}`), null);
+  // }
 }
 
 export default APIService;

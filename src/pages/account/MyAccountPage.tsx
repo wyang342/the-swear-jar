@@ -79,6 +79,8 @@ function MyAccountPage() {
         />
       </Button>
 
+      <Typography variant="body1">User Id: {currentUser?.uid}</Typography>
+
       <Typography variant="body1">
         Email: {currentUser?.email}
         <br />

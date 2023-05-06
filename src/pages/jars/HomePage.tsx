@@ -13,13 +13,20 @@ import { useNavigate } from "react-router-dom";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import { ref } from "firebase/database";
 import JarCard from "./components/JarCard";
+import InvitationCard from "./components/InvitationCard";
 
 function HomePage() {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const database = useDatabase();
+
+  // Subscribe to data
   const userJarsRef = ref(database, `users/${currentUser?.uid}/jars`);
   const { status, data: jarIds } = useDatabaseObjectData(userJarsRef);
+  const { status: invitationStatus, data: invitationIds } =
+    useDatabaseObjectData(
+      ref(database, `users/${currentUser?.uid}/invitations`)
+    );
 
   const renderJarCards = () => {
     if (!jarIds) return null;
@@ -34,6 +41,23 @@ function HomePage() {
     return jarCards;
   };
 
+  const renderInvitationCards = () => {
+    if (!invitationIds) return null;
+
+    const invitationCards = [];
+
+    for (const invitationId in invitationIds) {
+      if (invitationId === "NO_ID_FIELD") continue;
+      invitationCards.push(
+        <InvitationCard invitationId={invitationId} key={invitationId} />
+      );
+    }
+
+    return invitationCards;
+  };
+
+  if (invitationStatus === "success") console.log(invitationIds);
+
   return (
     <main>
       <Typography component="h1" variant="h5" sx={{ marginBottom: 2 }}>
@@ -44,6 +68,7 @@ function HomePage() {
 
       <Grid container spacing={2} alignContent="stretch">
         {status === "success" ? renderJarCards() : <CircularProgress />}
+        {invitationStatus === "success" ? renderInvitationCards() : null}
         <Grid item xs={4}>
           <Card variant="outlined" sx={{ height: "100%" }}>
             <Button

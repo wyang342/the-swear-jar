@@ -75,8 +75,5 @@ export const createJarSchema = yup.object({
 });
 
 export const inviteUserSchema = yup.object({
-  email: yup
-    .string()
-    .email("Enter a valid email")
-    .required("Email is required"),
+  uid: yup.string().required("User Id is required"),
 });
