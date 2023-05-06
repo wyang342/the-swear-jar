@@ -14,6 +14,7 @@ import { updateProfile } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
 import SuccessAlert from "../components/alerts/SuccessAlert";
 import ErrorAlert from "../components/alerts/ErrorAlert";
+import APIService from "../services/APIService";
 
 function EditProfilePage() {
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ function EditProfilePage() {
       setError("");
       try {
         await updateProfile(currentUser, { displayName: newNickname });
+        await APIService.addNickname(currentUser, newNickname);
         setSuccess(true);
       } catch (error: any) {
         setError(error.message);

@@ -13,7 +13,7 @@ import TopAppBar from "./components/TopAppBar";
 import EditProfilePage from "./pages/EditProfilePage";
 import CreateJarPage from "./pages/jars/CreateJarPage";
 import JarPage from "./pages/jars/JarPage";
-import MembersPage from "./pages/MembersPage";
+import MembersPage from "./pages/jars/MembersPage";
 
 // App == Routes
 function App() {

@@ -17,11 +17,17 @@ import { JarModel } from "../models/JarModel";
 class APIService {
   static async initializeUser(uid: string, email: string) {
     const db = getDatabase();
-    const userRef = databaseRef(db, `users/${uid}`);
 
-    await set(userRef, {
+    await set(databaseRef(db, `users/${uid}`), {
       email: email,
     });
+  }
+
+  static async addNickname(currentUser: User, nickname: string) {
+    const db = getDatabase();
+    const uid = currentUser.uid;
+
+    await set(databaseRef(db, `users/${uid}/nickname`), nickname);
   }
 
   static async uploadProfilePicture(currentUser: User, selectedImage: File) {
