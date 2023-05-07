@@ -69,6 +69,12 @@ class APIService {
   static async inviteUser(model: InvitationModel) {
     const db = getDatabase();
 
+    // See if user exists
+    const snapshot = await get(databaseRef(db, `users/${model.user_id}`));
+    if (!snapshot.exists()) {
+      throw new Error("User does not exist");
+    }
+
     // Get new invitation key
     const invitationKey = push(child(databaseRef(db), "invitations")).key;
     if (!invitationKey) {
