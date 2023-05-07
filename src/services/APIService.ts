@@ -51,19 +51,21 @@ class APIService {
     return downloadURL;
   }
 
-  static async createJar(currentUser: User, model: JarModel) {
+  static async createJar(currentUser: User, model: JarModel): Promise<string> {
     const db = getDatabase();
     const uid = currentUser.uid;
 
-    // Get new jar key
-    const jarKey = push(child(databaseRef(db), "jars")).key;
-    if (!jarKey) {
+    // Get new jar id
+    const jarId = push(child(databaseRef(db), "jars")).key;
+    if (!jarId) {
       throw new Error("Jar key is null");
     }
 
     // Create Jar
-    await set(databaseRef(db, `jars/${jarKey}`), model);
-    await set(databaseRef(db, `users/${uid}/jars/${jarKey}`), "joined");
+    await set(databaseRef(db, `jars/${jarId}`), model);
+    await set(databaseRef(db, `users/${uid}/jars/${jarId}`), "joined");
+
+    return jarId;
   }
 
   static async inviteUser(model: InvitationModel) {

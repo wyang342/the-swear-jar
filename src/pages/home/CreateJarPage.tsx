@@ -21,7 +21,7 @@ function CreateJarPage() {
   const { currentUser } = useContext(AuthContext);
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
+  const [newJarId, setNewJarId] = useState<string>("");
 
   const formik = useFormik({
     initialValues: {
@@ -48,7 +48,7 @@ function CreateJarPage() {
       try {
         setError(false);
         setLoading(true);
-        setSuccess(false);
+        setNewJarId("");
 
         const uid = currentUser!.uid;
 
@@ -65,8 +65,8 @@ function CreateJarPage() {
           },
         };
 
-        await APIService.createJar(currentUser, jarData);
-        setSuccess(true);
+        const jarId = await APIService.createJar(currentUser, jarData);
+        setNewJarId(jarId);
       } catch (err: any) {
         console.log(err.message);
         setError(true);
@@ -99,16 +99,16 @@ function CreateJarPage() {
           </ErrorAlert>
         )}
 
-        {success ? (
+        {newJarId ? (
           <>
             <SuccessAlert>Jar successfully created!</SuccessAlert>
             <Button
               variant="contained"
               component={RouterLink}
-              to="/"
+              to={`/jars/${newJarId}`}
               sx={{ mt: 2 }}
             >
-              My Jars
+              Go to Jar
             </Button>
           </>
         ) : (
