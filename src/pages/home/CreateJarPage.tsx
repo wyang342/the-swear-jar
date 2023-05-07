@@ -137,7 +137,6 @@ function CreateJarPage() {
               id="commonPurpose"
               label="Common Purpose"
               name="commonPurpose"
-              autoFocus
               value={formik.values.commonPurpose}
               onChange={formik.handleChange}
               error={
@@ -155,7 +154,6 @@ function CreateJarPage() {
               id="jarFillingAction"
               label="Jar Filling Action"
               name="jarFillingAction"
-              autoFocus
               value={formik.values.jarFillingAction}
               onChange={formik.handleChange}
               error={
@@ -174,7 +172,6 @@ function CreateJarPage() {
               id="costPerAction"
               label="$ Cost per Action"
               name="costPerAction"
-              autoFocus
               value={formik.values.costPerAction}
               onChange={formik.handleChange}
               error={
@@ -192,7 +189,6 @@ function CreateJarPage() {
               id="goalAmount"
               label="$ Goal Amount"
               name="goalAmount"
-              autoFocus
               value={formik.values.goalAmount}
               onChange={formik.handleChange}
               error={

@@ -39,9 +39,15 @@ export default function MembersPage() {
   const renderInvitationTableRows = () => {
     const invitationTableRows = [];
 
+    if (!jarId) return null;
+
     for (const invitationId in jarData.invitations) {
       invitationTableRows.push(
-        <InvitationTableRow key={invitationId} invitationId={invitationId} />
+        <InvitationTableRow
+          key={invitationId}
+          invitationId={invitationId}
+          jarId={jarId!}
+        />
       );
     }
 
@@ -66,7 +72,7 @@ export default function MembersPage() {
         <TableBody>{renderMemberTableRows()}</TableBody>
         <TableBody>{renderInvitationTableRows()}</TableBody>
       </Table>
-      <InviteForm jarId={jarId!} />
+      <InviteForm jarId={jarId!} jarData={jarData} />
     </main>
   ) : null;
 }

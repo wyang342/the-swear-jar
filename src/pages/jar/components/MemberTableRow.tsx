@@ -1,10 +1,10 @@
 import React from "react";
 import { TableRow, TableCell, Button, Typography } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import MemberAvatar from "./MemberAvatar";
 import { ref } from "firebase/database";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import { UserModel } from "../../../models/UserModel";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 interface MemberTableRowProps {
   memberId: string;
@@ -45,7 +45,7 @@ export default function MemberTableRow({
       <TableCell align="right">
         <Button
           variant="outlined"
-          startIcon={<DeleteIcon color="error" />}
+          startIcon={<CancelIcon color="error" />}
           color="error"
         >
           Remove

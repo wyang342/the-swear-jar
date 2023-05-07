@@ -61,7 +61,7 @@ export default function InvitationCard({ invitationId }: InvitationCardProps) {
               if (!currentUser) {
                 return;
               }
-              await APIService.deleteInvitation(
+              await APIService.deleteInvitationAsInvitee(
                 currentUser!,
                 invitationId,
                 invitationData.jar_id

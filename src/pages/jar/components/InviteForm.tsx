@@ -6,12 +6,14 @@ import { InvitationModel } from "../../../models/InvitationModel";
 import { useState } from "react";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
 import SuccessAlert from "../../../components/alerts/SuccessAlert";
+import { JarModel } from "../../../models/JarModel";
 
 interface InviteFormProps {
   jarId: string;
+  jarData: JarModel;
 }
 
-function InviteForm({ jarId }: InviteFormProps) {
+function InviteForm({ jarId, jarData }: InviteFormProps) {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
 
@@ -22,6 +24,11 @@ function InviteForm({ jarId }: InviteFormProps) {
     validationSchema: inviteUserSchema,
     onSubmit: async (values) => {
       const { uid } = values;
+
+      if (uid in jarData.contributions) {
+        setError("User already in jar.");
+        return;
+      }
 
       const model: InvitationModel = {
         jar_id: jarId,
