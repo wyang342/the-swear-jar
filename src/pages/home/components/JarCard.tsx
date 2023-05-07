@@ -37,7 +37,10 @@ function JarCard({ jarId }: JarCardProps) {
             {jarData.name}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {Object.keys(jarData.contributions).length} members
+            {Object.keys(jarData.contributions).length}{" "}
+            {Object.keys(jarData.contributions).length === 1
+              ? "member"
+              : "members"}
           </Typography>
           <Typography variant="body2">{jarData.common_purpose}</Typography>
         </CardContent>
