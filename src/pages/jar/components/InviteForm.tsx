@@ -12,7 +12,7 @@ interface InviteFormProps {
 }
 
 function InviteForm({ jarId }: InviteFormProps) {
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
 
   const formik = useFormik({
@@ -28,14 +28,14 @@ function InviteForm({ jarId }: InviteFormProps) {
         user_id: uid,
       };
 
-      setError(false);
+      setError("");
       setSuccess(false);
       try {
         await APIService.inviteUser(model);
         setSuccess(true);
       } catch (error: any) {
-        console.log(error);
-        setError(true);
+        console.log(error.message);
+        setError(error.message);
       }
     },
   });

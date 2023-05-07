@@ -6,7 +6,7 @@ export default function ErrorAlert({
   children: React.ReactNode;
 }) {
   return (
-    <Alert sx={{ marginTop: 2 }} severity="error">
+    <Alert sx={{ my: 1 }} severity="error">
       {children}
     </Alert>
   );

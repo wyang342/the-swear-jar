@@ -33,8 +33,6 @@ function HomePage() {
 
     const jarCards = [];
 
-    console.log(jarIds);
-
     for (const jarId of Object.keys(jarIds as object)) {
       if (jarId === "NO_ID_FIELD") continue;
       jarCards.push(<JarCard jarId={jarId} key={jarId} />);

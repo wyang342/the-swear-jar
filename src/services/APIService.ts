@@ -72,13 +72,13 @@ class APIService {
     // See if user exists
     const snapshot = await get(databaseRef(db, `users/${model.user_id}`));
     if (!snapshot.exists()) {
-      throw new Error("User does not exist");
+      throw new Error("User was not found.");
     }
 
     // Get new invitation key
     const invitationKey = push(child(databaseRef(db), "invitations")).key;
     if (!invitationKey) {
-      throw new Error("Invitation key is null");
+      throw new Error("Invitation key is null.");
     }
 
     // Create Invitation
@@ -145,11 +145,6 @@ class APIService {
       if (snapshot.exists()) {
         const invitationData: InvitationModel = snapshot.val();
 
-        console.log("attempting to remove invitation from user");
-        console.log(
-          "path is: " +
-            `users/${invitationData.user_id}/invitations/${invitationId}`
-        );
         await remove(
           databaseRef(
             db,

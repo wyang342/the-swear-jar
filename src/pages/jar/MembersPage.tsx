@@ -39,7 +39,6 @@ export default function MembersPage() {
   const renderInvitationTableRows = () => {
     const invitationTableRows = [];
 
-    console.log(jarData.invitations);
     for (const invitationId in jarData.invitations) {
       invitationTableRows.push(
         <InvitationTableRow key={invitationId} invitationId={invitationId} />
