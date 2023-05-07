@@ -12,6 +12,7 @@ import {
   child,
   set,
   remove,
+  get,
 } from "firebase/database";
 import { JarModel } from "../models/JarModel";
 import { InvitationModel } from "../models/InvitationModel";
@@ -125,17 +126,57 @@ class APIService {
     await remove(databaseRef(db, `invitations/${invitationId}`));
   }
 
-  // Note that this function does not remove invitations
+  // Note that this function does not remove invitations from a user
   static async deleteJar(jarId: string, jarData: JarModel) {
     const db = getDatabase();
 
+    // Delete invitations to jar from every user that was invited
+    for (const invitationId in jarData.invitations) {
+      const snapshot = await get(
+        databaseRef(db, `invitations/${invitationId}`)
+      );
+
+      if (snapshot.exists()) {
+        const invitationData: InvitationModel = snapshot.val();
+
+        console.log("attempting to remove invitation from user");
+        console.log(
+          "path is: " +
+            `users/${invitationData.user_id}/invitations/${invitationId}`
+        );
+        await remove(
+          databaseRef(
+            db,
+            `users/${invitationData.user_id}/invitations/${invitationId}`
+          )
+        );
+      } else {
+        throw new Error("Invitation snapshot does not exist.");
+      }
+    }
+
     // Delete jar from every user
-    for (const user in jarData.contributions) {
-      await remove(databaseRef(db, `users/${user}/jars/${jarId}`));
+    for (const userId in jarData.contributions) {
+      await remove(databaseRef(db, `users/${userId}/jars/${jarId}`));
+    }
+
+    // Delete invitations
+    for (const invitationId in jarData.invitations) {
+      await remove(databaseRef(db, `invitations/${invitationId}`));
     }
 
     // Delete jar
     await remove(databaseRef(db, `jars/${jarId}`));
+  }
+
+  static async removeInvitationFromUser(
+    currentUser: User,
+    invitationId: number
+  ) {
+    const db = getDatabase();
+    const uid = currentUser.uid;
+
+    await remove(databaseRef(db, `users/${uid}/invitations/${invitationId}`));
   }
 }
 
