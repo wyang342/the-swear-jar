@@ -25,7 +25,11 @@ export default function MembersPage() {
 
     for (const memberId in jarData.contributions) {
       memberTableRows.push(
-        <MemberTableRow memberId={memberId} leaderId={jarData.leader} />
+        <MemberTableRow
+          key={memberId}
+          memberId={memberId}
+          leaderId={jarData.leader}
+        />
       );
     }
 

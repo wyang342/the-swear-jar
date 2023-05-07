@@ -29,7 +29,7 @@ export default function MemberTableRow({
           memberStatus="joined"
           isLeader={memberId === leaderId}
         />
-        <Typography display="inline" variant="body1" sx={{ ml: 2 }}>
+        <Typography component="span" display="inline" sx={{ ml: 2 }}>
           {memberData.nickname ?? null}
         </Typography>
       </TableCell>

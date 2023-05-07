@@ -18,8 +18,8 @@ export default function MemberAvatar({
   const { status, data: profilePicture } =
     useDatabaseObjectData<string>(profilePictureRef);
 
-  if (isLeader) {
-    return (
+  if (status === "success") {
+    return isLeader ? (
       <Badge
         overlap="circular"
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -36,18 +36,20 @@ export default function MemberAvatar({
           }}
         />
       </Badge>
+    ) : (
+      <Badge>
+        <Avatar
+          alt={memberId}
+          src={profilePicture}
+          sx={{
+            width: 56,
+            height: 56,
+            opacity: memberStatus === "joined" ? 1 : 0.5,
+          }}
+        />
+      </Badge>
     );
+  } else {
+    return null;
   }
-
-  return status === "success" ? (
-    <Avatar
-      alt={memberId}
-      src={profilePicture}
-      sx={{
-        width: 56,
-        height: 56,
-        opacity: memberStatus === "joined" ? 1 : 0.5,
-      }}
-    />
-  ) : null;
 }
