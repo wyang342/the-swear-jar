@@ -1,10 +1,11 @@
-import React from "react";
-import { TableRow, TableCell, Button, Typography } from "@mui/material";
+import { useContext } from "react";
+import { TableRow, TableCell, Typography } from "@mui/material";
 import MemberAvatar from "./MemberAvatar";
 import { ref } from "firebase/database";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import { UserModel } from "../../../models/UserModel";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { AuthContext } from "../../../context/AuthContext";
+// import CancelIcon from "@mui/icons-material/Cancel";
 
 interface MemberTableRowProps {
   memberId: string;
@@ -19,6 +20,9 @@ export default function MemberTableRow({
   const memberRef = ref(database, `users/${memberId}`);
   const { status, data: memberData } =
     useDatabaseObjectData<UserModel>(memberRef);
+  const { currentUser } = useContext(AuthContext);
+
+  if (!currentUser) return null;
 
   return status === "success" ? (
     <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
@@ -42,15 +46,20 @@ export default function MemberTableRow({
           joined
         </Typography>
       </TableCell>
-      <TableCell align="right">
-        <Button
-          variant="outlined"
-          startIcon={<CancelIcon color="error" />}
-          color="error"
-        >
-          Remove
-        </Button>
-      </TableCell>
+      {/* {currentUser!.uid === leaderId && currentUser!.uid !== memberId ? (
+        <TableCell align="right">
+          <Button
+            variant="outlined"
+            startIcon={<CancelIcon color="error" />}
+            color="error"
+          >
+            Remove
+          </Button>
+        </TableCell>
+      ) : (
+        <TableCell></TableCell>
+      )} */}
+      <TableCell></TableCell>
     </TableRow>
   ) : null;
 }
