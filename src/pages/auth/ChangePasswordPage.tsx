@@ -87,13 +87,13 @@ function ChangePasswordPage() {
           </ErrorAlert>
         )}
 
-        {success ? (
+        {success && (
           <SuccessAlert>
             Password successfully changed!
             <br />
             Please sign in again.
           </SuccessAlert>
-        ) : null}
+        )}
 
         {success ? (
           <Button

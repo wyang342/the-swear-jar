@@ -73,9 +73,7 @@ function EditProfilePage() {
           </ErrorAlert>
         )}
 
-        {success ? (
-          <SuccessAlert>Profile successfully updated!</SuccessAlert>
-        ) : null}
+        {success && <SuccessAlert>Profile successfully updated!</SuccessAlert>}
 
         <Box
           component="form"

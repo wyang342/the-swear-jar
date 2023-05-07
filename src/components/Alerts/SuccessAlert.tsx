@@ -6,7 +6,7 @@ export default function SuccessAlert({
   children: React.ReactNode;
 }) {
   return (
-    <Alert sx={{ marginTop: 2 }} severity="success">
+    <Alert sx={{ my: 1 }} severity="success">
       {children}
     </Alert>
   );

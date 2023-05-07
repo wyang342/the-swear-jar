@@ -5,6 +5,7 @@ import APIService from "../../../services/APIService";
 import { InvitationModel } from "../../../models/InvitationModel";
 import { useState } from "react";
 import ErrorAlert from "../../../components/alerts/ErrorAlert";
+import SuccessAlert from "../../../components/alerts/SuccessAlert";
 
 interface InviteFormProps {
   jarId: string;
@@ -52,6 +53,8 @@ function InviteForm({ jarId }: InviteFormProps) {
           Please try again.
         </ErrorAlert>
       )}
+
+      {success && <SuccessAlert>User invited successfully!</SuccessAlert>}
 
       <TextField
         id="uid"
