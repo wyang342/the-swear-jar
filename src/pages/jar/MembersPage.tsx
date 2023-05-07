@@ -6,7 +6,9 @@ import {
   TableRow,
   TableCell,
   TableHead,
+  Link,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import { ref } from "firebase/database";
 import { JarModel } from "../../models/JarModel";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
@@ -57,7 +59,12 @@ export default function MembersPage() {
   return status === "success" ? (
     <main>
       <Typography component="h1" variant="h4" align="center" sx={{ mb: 2 }}>
-        Members of {jarData.name}
+        Members of{" "}
+        {
+          <Link component={RouterLink} to={`/jars/${jarId}`}>
+            {jarData.name}
+          </Link>
+        }
       </Typography>
 
       <Table sx={{ minWidth: 650, mb: 6 }} aria-label="simple table">
