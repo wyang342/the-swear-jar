@@ -4,13 +4,11 @@ import { ref } from "firebase/database";
 
 interface MemberAvatarProps {
   memberId: string;
-  memberStatus: string;
   isLeader: boolean;
 }
 
 export default function MemberAvatar({
   memberId,
-  memberStatus,
   isLeader,
 }: MemberAvatarProps) {
   const database = useDatabase();
@@ -32,7 +30,6 @@ export default function MemberAvatar({
           sx={{
             width: 56,
             height: 56,
-            opacity: memberStatus === "joined" ? 1 : 0.5,
           }}
         />
       </Badge>
@@ -44,7 +41,6 @@ export default function MemberAvatar({
           sx={{
             width: 56,
             height: 56,
-            opacity: memberStatus === "joined" ? 1 : 0.5,
           }}
         />
       </Badge>

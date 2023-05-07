@@ -5,15 +5,15 @@ import RequireAuth from "./components/RequireAuth";
 // Import Pages
 import SigninPage from "./pages/auth/SigninPage";
 import SignupPage from "./pages/auth/SignupPage";
-import HomePage from "./pages/jars/HomePage";
+import HomePage from "./pages/home/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ChangePasswordPage from "./pages/auth/ChangePasswordPage";
 import MyAccountPage from "./pages/account/MyAccountPage";
 import TopAppBar from "./components/TopAppBar";
 import EditProfilePage from "./pages/account/EditProfilePage";
-import CreateJarPage from "./pages/jars/CreateJarPage";
-import JarPage from "./pages/jars/JarPage";
-import MembersPage from "./pages/jars/MembersPage";
+import CreateJarPage from "./pages/home/CreateJarPage";
+import JarPage from "./pages/jar/JarPage";
+import MembersPage from "./pages/jar/MembersPage";
 
 // App == Routes
 function App() {

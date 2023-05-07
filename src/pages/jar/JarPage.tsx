@@ -42,7 +42,6 @@ export default function JarPage() {
         <MemberAvatar
           key={memberId}
           memberId={memberId}
-          memberStatus="joined"
           isLeader={memberId === jarData.leader}
         />
       );

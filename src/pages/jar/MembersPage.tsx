@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import {
   Typography,
@@ -13,6 +12,7 @@ import { JarModel } from "../../models/JarModel";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import MemberTableRow from "./components/MemberTableRow";
 import InviteForm from "./components/InviteForm";
+import InvitationTableRow from "./components/InvitationTableRow";
 
 export default function MembersPage() {
   const { jarId } = useParams<{ jarId: string }>();
@@ -36,6 +36,19 @@ export default function MembersPage() {
     return memberTableRows;
   };
 
+  const renderInvitationTableRows = () => {
+    const invitationTableRows = [];
+
+    console.log(jarData.invitations);
+    for (const invitationId in jarData.invitations) {
+      invitationTableRows.push(
+        <InvitationTableRow key={invitationId} invitationId={invitationId} />
+      );
+    }
+
+    return invitationTableRows;
+  };
+
   return status === "success" ? (
     <main>
       <Typography component="h1" variant="h4" align="center" sx={{ mb: 2 }}>
@@ -47,10 +60,12 @@ export default function MembersPage() {
           <TableRow>
             <TableCell>Member</TableCell>
             <TableCell>Email</TableCell>
+            <TableCell>Status</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>{renderMemberTableRows()}</TableBody>
+        <TableBody>{renderInvitationTableRows()}</TableBody>
       </Table>
       <InviteForm jarId={jarId!} />
     </main>

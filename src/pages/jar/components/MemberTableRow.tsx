@@ -26,7 +26,6 @@ export default function MemberTableRow({
         <MemberAvatar
           key={memberId}
           memberId={memberId}
-          memberStatus="joined"
           isLeader={memberId === leaderId}
         />
         <Typography component="span" display="inline" sx={{ ml: 2 }}>
@@ -36,6 +35,11 @@ export default function MemberTableRow({
       <TableCell>
         <Typography display="inline" variant="body1">
           {memberData.email}
+        </Typography>
+      </TableCell>
+      <TableCell>
+        <Typography display="inline" variant="body1">
+          joined
         </Typography>
       </TableCell>
       <TableCell align="right">
