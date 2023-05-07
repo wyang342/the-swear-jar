@@ -69,13 +69,13 @@ function SigninPage() {
           Sign in
         </Typography>
 
-        {error ? (
+        {error && (
           <ErrorAlert>
             Incorrect credentials or too many attempts.
             <br />
             Please try again.
           </ErrorAlert>
-        ) : null}
+        )}
 
         <Box
           component="form"

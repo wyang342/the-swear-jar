@@ -79,13 +79,13 @@ function ChangePasswordPage() {
           Change Password
         </Typography>
 
-        {error ? (
+        {error && (
           <ErrorAlert>
             {error}
             <br />
             Please try again.
           </ErrorAlert>
-        ) : null}
+        )}
 
         {success ? (
           <SuccessAlert>

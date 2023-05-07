@@ -74,13 +74,13 @@ function SignupPage() {
           Sign up
         </Typography>
 
-        {error ? (
+        {error && (
           <ErrorAlert>
             An error occurred while signing up.
             <br />
             Please try again.
           </ErrorAlert>
-        ) : null}
+        )}
 
         <Box
           component="form"

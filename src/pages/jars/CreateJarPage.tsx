@@ -91,13 +91,13 @@ function CreateJarPage() {
           Create a Jar
         </Typography>
 
-        {error ? (
+        {error && (
           <ErrorAlert>
             An error occurred while creating a jar.
             <br />
             Please try again.
           </ErrorAlert>
-        ) : null}
+        )}
 
         {success ? (
           <>

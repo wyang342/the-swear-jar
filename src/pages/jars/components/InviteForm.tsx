@@ -3,19 +3,16 @@ import { useFormik } from "formik";
 import { inviteUserSchema } from "../../../utils/validationSchemas";
 import APIService from "../../../services/APIService";
 import { InvitationModel } from "../../../models/InvitationModel";
-import { useDatabase, useDatabaseObjectData } from "reactfire";
-import { query, ref } from "firebase/database";
+import { useState } from "react";
+import ErrorAlert from "../../../components/alerts/ErrorAlert";
 
 interface InviteFormProps {
   jarId: string;
 }
 
 function InviteForm({ jarId }: InviteFormProps) {
-  const database = useDatabase();
-
-  // const profilePictureRef = ref(database, `users/${memberId}/profilePicture`);
-  // const { status, data: uid } =
-  //   useDatabaseObjectData<string>(profilePictureRef);
+  const [error, setError] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const formik = useFormik({
     initialValues: {
@@ -30,7 +27,15 @@ function InviteForm({ jarId }: InviteFormProps) {
         user_id: uid,
       };
 
-      await APIService.inviteUser(model);
+      setError(false);
+      setSuccess(false);
+      try {
+        await APIService.inviteUser(model);
+        setSuccess(true);
+      } catch (error: any) {
+        console.log(error);
+        setError(true);
+      }
     },
   });
 
@@ -39,6 +44,15 @@ function InviteForm({ jarId }: InviteFormProps) {
       <Typography component="h2" variant="h6">
         Invite
       </Typography>
+
+      {error && (
+        <ErrorAlert>
+          {error}
+          <br />
+          Please try again.
+        </ErrorAlert>
+      )}
+
       <TextField
         id="uid"
         label="User Id"

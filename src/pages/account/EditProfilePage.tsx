@@ -65,13 +65,13 @@ function EditProfilePage() {
           Edit Profile
         </Typography>
 
-        {error ? (
+        {error && (
           <ErrorAlert>
             {error}
             <br />
             Please try again.
           </ErrorAlert>
-        ) : null}
+        )}
 
         {success ? (
           <SuccessAlert>Profile successfully updated!</SuccessAlert>

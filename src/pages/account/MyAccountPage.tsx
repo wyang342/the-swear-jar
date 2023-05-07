@@ -52,13 +52,13 @@ function MyAccountPage() {
         My Account
       </Typography>
 
-      {error ? (
+      {error && (
         <ErrorAlert>
           {error}
           <br />
           Please try again.
         </ErrorAlert>
-      ) : null}
+      )}
 
       {currentUser ? (
         <Avatar
