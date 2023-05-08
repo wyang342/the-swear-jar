@@ -206,19 +206,25 @@ class APIService {
     await remove(databaseRef(db, `users/${uid}/invitations/${invitationId}`));
   }
 
-  static async pay(jarId: string, uid: string, amount: number) {
+  static async pay(jarId: string, uid: string, jarData: JarModel) {
     const db = getDatabase();
+    let costPerAction: number = jarData.cost_per_action;
+
+    // Only pay up to what is needed
+    if (jarData.current_amount + costPerAction > jarData.goal_amount) {
+      costPerAction = jarData.goal_amount - jarData.current_amount;
+    }
 
     // Increment contributions
     await runTransaction(
       databaseRef(db, `jars/${jarId}/contributions/${uid}`),
-      (currentValue) => currentValue + amount
+      (currentValue) => currentValue + costPerAction
     );
 
     // Increments current_amount
     await runTransaction(
       databaseRef(db, `jars/${jarId}/current_amount`),
-      (currentValue) => currentValue + amount
+      (currentValue) => currentValue + costPerAction
     );
   }
 }
