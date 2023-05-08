@@ -20,6 +20,7 @@ import { useContext, useState } from "react";
 import APIService from "../../services/APIService";
 import { AuthContext } from "../../context/AuthContext";
 import NotFoundPage from "../NotFoundPage";
+import MemberName from "./components/MemberName";
 
 export default function JarPage() {
   // Fetch data
@@ -29,7 +30,8 @@ export default function JarPage() {
   const { status, data: jarData } = useDatabaseObjectData<JarModel>(jarsRef);
   const { currentUser } = useContext(AuthContext);
 
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
+  const [resetDialogOpen, setResetDialogOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const [deleting, setDeleting] = useState<boolean>(false);
@@ -58,12 +60,39 @@ export default function JarPage() {
     );
   };
 
-  const handleClickOpen = () => {
-    setDialogOpen(true);
+  const renderMemberContributions = () => {
+    const memberContributions = [];
+
+    for (const memberId in jarData.contributions) {
+      memberContributions.push(
+        <Typography key={memberId} variant="body1" sx={{ marginBottom: 2 }}>
+          <MemberAvatar
+            memberId={memberId}
+            isLeader={memberId === jarData.leader}
+          />
+          {<MemberName memberId={memberId} />}: $
+          {jarData.contributions[memberId as keyof object]}
+        </Typography>
+      );
+    }
+
+    return memberContributions;
   };
 
-  const handleClose = () => {
-    setDialogOpen(false);
+  const handleDeleteClickOpen = () => {
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteDialogOpen(false);
+  };
+
+  const handleResetClickOpen = () => {
+    setResetDialogOpen(true);
+  };
+
+  const handleResetClose = () => {
+    setResetDialogOpen(false);
   };
 
   const handleDeleteJar = async () => {
@@ -73,6 +102,14 @@ export default function JarPage() {
       navigate("/");
       setDeleting(false);
     }
+  };
+
+  const handleResetJar = async () => {
+    if (status === "success" && jarId) {
+      await APIService.resetJar(jarId!, jarData);
+    }
+
+    handleResetClose();
   };
 
   const handlePay = async () => {
@@ -108,7 +145,11 @@ export default function JarPage() {
           Pay ${jarData.cost_per_action}
         </Button>
       ) : (
-        <Button variant="contained" sx={{ mb: 4 }}>
+        <Button
+          variant="contained"
+          sx={{ mb: 4 }}
+          onClick={handleResetClickOpen}
+        >
           Reset Jar
         </Button>
       )}
@@ -132,20 +173,24 @@ export default function JarPage() {
         {jarData.jar_filling_action}
       </Typography>
 
-      <Typography variant="h6">Contributions</Typography>
+      {/* <Typography variant="h6">Contributions</Typography>
       <Typography variant="body1" sx={{ marginBottom: 2 }}>
         TODO
-      </Typography>
+      </Typography> */}
 
       {currentUser?.uid === jarData.leader ? (
-        <Button variant="contained" onClick={handleClickOpen} color="error">
+        <Button
+          variant="contained"
+          onClick={handleDeleteClickOpen}
+          color="error"
+        >
           Delete Jar
         </Button>
       ) : null}
 
       <Dialog
-        open={dialogOpen}
-        onClose={handleClose}
+        open={deleteDialogOpen}
+        onClose={handleDeleteClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -159,11 +204,37 @@ export default function JarPage() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleDeleteClose} autoFocus>
             Cancel
           </Button>
           <Button onClick={handleDeleteJar} color="error">
             Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={resetDialogOpen}
+        onClose={handleResetClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Reset {jarData.name}?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            This will reset the current amount stored in the jar to $0. Here are
+            the contributions of each member:
+            <br />
+            <br />
+            {renderMemberContributions()}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleResetClose} autoFocus>
+            Cancel
+          </Button>
+          <Button onClick={handleResetJar} color="error">
+            Reset
           </Button>
         </DialogActions>
       </Dialog>

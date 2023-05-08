@@ -227,6 +227,18 @@ class APIService {
       (currentValue) => currentValue + costPerAction
     );
   }
+
+  static async resetJar(jarId: string, jarData: JarModel) {
+    const db = getDatabase();
+
+    // Reset contributions
+    for (const userId in jarData.contributions) {
+      await set(databaseRef(db, `jars/${jarId}/contributions/${userId}`), 0);
+    }
+
+    // Reset current_amount
+    await set(databaseRef(db, `jars/${jarId}/current_amount`), 0);
+  }
 }
 
 export default APIService;
