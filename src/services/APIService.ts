@@ -13,6 +13,7 @@ import {
   set,
   remove,
   get,
+  runTransaction,
 } from "firebase/database";
 import { JarModel } from "../models/JarModel";
 import { InvitationModel } from "../models/InvitationModel";
@@ -203,6 +204,22 @@ class APIService {
     const uid = currentUser.uid;
 
     await remove(databaseRef(db, `users/${uid}/invitations/${invitationId}`));
+  }
+
+  static async pay(jarId: string, uid: string, amount: number) {
+    const db = getDatabase();
+
+    // Increment contributions
+    await runTransaction(
+      databaseRef(db, `jars/${jarId}/contributions/${uid}`),
+      (currentValue) => currentValue + amount
+    );
+
+    // Increments current_amount
+    await runTransaction(
+      databaseRef(db, `jars/${jarId}/current_amount`),
+      (currentValue) => currentValue + amount
+    );
   }
 }
 

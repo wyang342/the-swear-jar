@@ -75,6 +75,12 @@ export default function JarPage() {
     }
   };
 
+  const handlePay = async () => {
+    if (!jarId) return;
+
+    APIService.pay(jarId, currentUser!.uid, jarData!.cost_per_action);
+  };
+
   if (deleting) {
     return <LinearProgress />;
   }
@@ -97,7 +103,7 @@ export default function JarPage() {
         ${jarData.current_amount} in the jar (Goal: ${jarData.goal_amount})
       </Typography>
 
-      <Button variant="contained" sx={{ mb: 4 }}>
+      <Button variant="contained" sx={{ mb: 4 }} onClick={handlePay}>
         Pay ${jarData.cost_per_action}
       </Button>
 
