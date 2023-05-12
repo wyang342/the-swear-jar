@@ -27,11 +27,11 @@ function TopAppBar() {
   const navigate = useNavigate();
   const { currentUser, signOut } = useContext(AuthContext);
 
-  const handleSettingClick = (setting: string) => {
+  const handleSettingClick = async (setting: string) => {
     if (setting === "My Account") {
       navigate("/my-account");
     } else if (setting === "Sign Out") {
-      signOut();
+      await signOut();
       window.location.reload();
     }
     handleCloseUserMenu();

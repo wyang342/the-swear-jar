@@ -32,8 +32,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return unsubscribe;
   }, []);
 
-  const signOut = () => {
-    signOutDefault();
+  const signOut = async () => {
+    await signOutDefault();
     setCurrentUser(null);
     navigate("/auth/signin");
   };
